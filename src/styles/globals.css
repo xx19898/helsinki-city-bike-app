@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+    width:100%;
+    min-height: 100vh;
+    margin:0;
+    height:auto;
+    background-color:#C8E0F4;
+}
+
+
+#__next {
+  @apply flex flex-col min-h-screen h-auto w-full;
+}
+
+
+html{
+    width:100vw;
+    min-height:100vh;
+    height:auto;
+    margin:0;
+    }
