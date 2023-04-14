@@ -1,55 +1,33 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:safepassword2023@localhost:5432/"
+  url      = "postgresql://postgres:safepassword2023@localhost:5432/helsinki-city-bike-app"
 }
 
-model Account {
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String
-  access_token      String
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  id                Int     @id @default(autoincrement())
-  User              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+model Journey {
+  id                                          Int      @id @default(autoincrement())
+  departure                                   DateTime
+  return                                      DateTime
+  departureStationId                          Int
+  returnStationId                             Int
+  coveredDistance                             Int
+  duration                                    Int
+  Station_Journey_departureStationIdToStation Station  @relation("Journey_departureStationIdToStation", fields: [departureStationId], references: [id])
+  Station_Journey_returnStationIdToStation    Station  @relation("Journey_returnStationIdToStation", fields: [returnStationId], references: [id])
 }
 
-model Example {
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-}
-
-model Session {
-  id           String   @id
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  User         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            String    @id
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  password      String
-  Account       Account[]
-  Session       Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+model Station {
+  fId                                         Int
+  id                                          Int       @id
+  name_FIN                                    String
+  name_SWE                                    String
+  name_ENG                                    String
+  address                                     String
+  city_FIN                                    String
+  city_SWE                                    String
+  operator                                    String
+  capacity                                    Int
+  x                                           Int
+  y                                           Int
+  Journey_Journey_departureStationIdToStation Journey[] @relation("Journey_departureStationIdToStation")
+  Journey_Journey_returnStationIdToStation    Journey[] @relation("Journey_returnStationIdToStation")
 }
