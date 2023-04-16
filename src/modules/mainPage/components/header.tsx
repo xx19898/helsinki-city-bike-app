@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import useAnimatedHeader from "../hooks/useAnimatedHeader"
-import TextLogo from "~/modules/icons/textLogo"
+import TextLogo from "~/resources/icons/textLogo"
 import { init } from "next/dist/compiled/@vercel/og/satori"
 
 export default () => {

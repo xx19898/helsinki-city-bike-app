@@ -16,6 +16,13 @@ body{
   @apply flex flex-col min-h-screen h-auto w-full;
 }
 
+@font-face {
+  font-family: "inter";
+  src: url("../../font/Inter-Regular.ttf");
+}
+
+
+
 
 html{
     width:100vw;

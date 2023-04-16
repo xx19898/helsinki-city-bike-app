@@ -4,7 +4,20 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily:{
-      'sans':['inter']
+      sans:['inter']
+    },
+    fontWeight: {
+      'thin': '100',
+      'hairline': '100',
+      'extralight': '200',
+      light: '300',
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700',
+      extrabold: '800',
+      'extra-bold': '800',
+      black: '900',
     },
     screens: {
       'sm': '640px',
@@ -23,9 +36,9 @@ export default {
       // => @media (min-width: 1536px) { ... }
     },
     fontSize: {
-      sm: '1rem',
-      base: '2.5rem',
-      xl: '3rem',
+      'sm': '1rem',
+      'base': '2.5rem',
+      'xl': '3rem',
       '2xl': '3.3rem',
       '3xl': '3.6rem',
       '4xl': '3.9rem',
