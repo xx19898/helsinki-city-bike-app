@@ -1,20 +1,47 @@
 import { Journey } from "@prisma/client"
+import { useState } from "react"
+import { api } from "~/utils/api"
+import { journeyDataAtom } from "../atoms/journeyAtoms"
+import { useAtom } from "jotai"
 
 export default({journeys}:{journeys:Journey[]}) => {
     const keys = getJourneyKeys(journeys)
+    const [cursor,setCursor] = useState(100)
+    const [journeyData,setJourneyData] = useAtom(journeyDataAtom)
+    async function handleScrollToTheBottom(){
+    
+        const newData = await api.journeys.journeyList.useQuery(cursor + 100).data
+        if(newData != undefined){
+            setJourneyData(newData)
+            setCursor(cursor + 100)
+        }
+        else{
+            throw new Error("Fetching journey data from the server when scrolled to the bottom of the list went wrong")
+        }
+    }
 
-
-   return {journeyKeys: keys}
-   
+    return {journeyKeys: keys,cursor:cursor,setCursor:setCursor,handleScrollToTheBottom: handleScrollToTheBottom}
 }
 
 function getJourneyKeys(journeys:Journey[]){
     
     const nonUndefinedJourney = journeys.find(journey => journey != undefined)
     
-    if(nonUndefinedJourney != undefined) return capitalLeadingLetterAndSeparateWords(Object.keys(nonUndefinedJourney))
-    throw new Error('GetJourneyKeys fails cause the journey server tries to get keys on is undefined')
+    return  {
+        bigScreenKeys: 
+        ['Id','Departure','Return',
+        'Departure Station Id','Return Station Id',
+        'Distance',
+        'Duration','Departure Station Name',
+        'Return Station Name'],
+        smallScreenKeys:
+        ['Id','Departure','Return',
+        'Distance','Duration','Departure Station',
+        'Return Station'],
+    }
 }
+
+
 
 export function capitalLeadingLetterAndSeparateWords(keys:string[]){
     return keys.map((key) => {

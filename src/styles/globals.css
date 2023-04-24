@@ -7,13 +7,14 @@ body{
     width:100%;
     min-height: 100vh;
     margin:0;
-    height:auto;
+    height:100%;
     background-color:#C8E0F4;
+    overflow:auto;
 }
 
 
 #__next {
-  @apply flex flex-col min-h-screen h-auto w-full;
+  @apply flex flex-col min-h-screen h-auto w-full overflow-auto;
 }
 
 @font-face {
@@ -29,4 +30,5 @@ html{
     min-height:100vh;
     height:auto;
     margin:0;
+    overflow:auto;
     }
