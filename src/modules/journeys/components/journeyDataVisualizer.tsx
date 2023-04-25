@@ -1,4 +1,6 @@
 import { Journey } from "@prisma/client"
+import {Column, useTable} from 'react-table'
+import { useMemo, useState } from "react"
 import { useViewport } from "~/common/hooks/useViewport"
 import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
 
@@ -10,8 +12,96 @@ interface IDataVisualizer{
     handleScrolledToTheBottom : () => void
 }
 
+
+
 export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisualizer) => {
     const width = useViewport().width
+    console.log({width})
+    console.log({data})
+    const rowData = useMemo(() => data, [])
+
+    const columnsBigScreen:Column[] = useMemo(
+        () => [
+          {
+            Header: 'Id',
+            accessor: 'id', // accessor is the "key" in the data
+          },
+          {
+            Header: 'Departure',
+            accessor: (row:any) => row.departure.toDateString(),
+          },
+          {
+            Header: 'Return',
+            accessor: (row:any) => row.return.toDateString(),
+            
+          },
+          {
+            Header: 'Departure Station Id',
+            accessor: 'departureStationId',
+          },
+          {
+            Header: 'Return Station Id',
+            accessor: 'returnStationId',
+          },
+          {
+            Header: 'Distance',
+            accessor: 'coveredDistance',
+          },
+          {
+            Header: 'Duration',
+            accessor: 'duration',
+          },
+          {
+            Header: 'Departure Station Name',
+            accessor: 'Station_Journey_departureStationIdToStation.name_FIN',
+          },
+          {
+            Header: 'Return Station Name',
+            accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
+          },
+        ],
+        []
+      )
+
+      
+    const columnsSmallScreen:Column[] = useMemo(
+        () => [
+          {
+            Header: 'Id',
+            accessor: 'id', // accessor is the "key" in the data
+          },
+          {
+            Header: 'Distance',
+            accessor: 'coveredDistance',
+          },
+          {
+            Header: 'Duration',
+            accessor: 'duration',
+          },
+          {
+            Header: 'Departure Station Name',
+            accessor: 'Station_Journey_departureStationIdToStation.name_FIN',
+          },
+          {
+            Header: 'Return Station Name',
+            accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
+          },
+        ],
+        []
+      )
+
+    const columns = width > 1024 ? columnsBigScreen : columnsSmallScreen
+
+
+    const tableInstance = useTable({columns:columns,data:rowData})
+
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow
+    } = tableInstance
 
     const handleScroll = (event:React.UIEvent<HTMLElement>) => {
         if(event.currentTarget === null) throw new Error("problems with scroll on journeys")
@@ -24,73 +114,87 @@ export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisu
       };
 
     return(
-        <>
-        {
-        width > 1024 ? <table className="w-full bg-ColumbiaBlue font-thin font-sans h-full">
-        <tbody>
-            <tr className="font-normal text-white bg-RichBlack h-10">
-                {
-                    keys.bigScreenKeys.map((key) => {
-                        return(
-                            <th className="font-extrabold">{key}</th>
-                        )
-                    })
-                }
-            </tr>
-            <div className="w-full h-full overflow-y-scroll" onScroll={(e) => handleScroll(e)}>
-            {
-                data.map(journey => {
-                    return(
-                        <tr className="even:bg-AirForceBlue">
-                            <th>{journey.id}</th>
-                            <th>{journey.departure.toDateString()}</th>
-                            <th>{journey.return.toDateString()}</th>
-                            <th>{journey.departureStationId}</th>
-                            <th>{journey.returnStationId}</th>
-                            <th>{journey.coveredDistance}</th>
-                            <th>{journey.duration}</th>
-                            <th>{journey.Station_Journey_departureStationIdToStation.name_FIN}</th>
-                            <th>{journey.Station_Journey_returnStationIdToStation.name_FIN}</th>
-                        </tr>
-                    )
-                })
-            }
-            </div>
-        </tbody>
-        </table>
-        :
-        <table className="w-full bg-ColumbiaBlue font-thin font-sans max-h-[400px] overflow-auto table">
-            <thead className="w-full table-header-group"> 
-            <tr className="w-full  h-full font-normal text-white bg-EngineeringOrange">
-                    {
-                        keys.smallScreenKeys.map((key) => {
-                            return(
-                                <th className="font-extrabold">{key}</th>
-                            )
-                        })
-                    }
-            </tr>
-            </thead>
-            <tbody className="w-full h-[200px] overflow-scroll bg-EngineeringOrange" onScroll={(e) => handleScroll(e)}>
-                {
-                    data.map(journey => {
-                        return(
-                            <tr className="even:bg-AirForceBlue h-[2.5rem]">
-                                <th>{journey.id}</th>
-                                <th>{journey.departure.toDateString()}</th>
-                                <th>{journey.return.toDateString()}</th>
-                                <th>{journey.coveredDistance}</th>
-                                <th>{journey.duration}</th>
-                                <th className="overflow-y-scroll">{journey.Station_Journey_departureStationIdToStation.name_FIN}</th>
-                                <th className="overflow-y-scroll">{journey.Station_Journey_returnStationIdToStation.name_FIN}</th>
-                            </tr>
-                        )
-                    })
-                }
-            </tbody>
-            </table>
-            }
-        </>
+      <table {...getTableProps()}>
+
+     <thead>
+
+       {// Loop over the header rows
+
+       headerGroups.map(headerGroup => (
+
+         // Apply the header row props
+
+         <tr {...headerGroup.getHeaderGroupProps()}>
+
+           {// Loop over the headers in each row
+
+           headerGroup.headers.map(column => (
+
+             // Apply the header cell props
+
+             <th {...column.getHeaderProps()}>
+
+               {// Render the header
+
+               column.render('Header')}
+
+             </th>
+
+           ))}
+
+         </tr>
+
+       ))}
+
+     </thead>
+
+     {/* Apply the table body props */}
+
+     <tbody {...getTableBodyProps()}>
+
+       {// Loop over the table rows
+
+       rows.map(row => {
+
+         // Prepare the row for display
+
+         prepareRow(row)
+
+         return (
+
+           // Apply the row props
+
+           <tr {...row.getRowProps()}>
+
+             {// Loop over the rows cells
+
+             row.cells.map(cell => {
+
+               // Apply the cell props
+
+               return (
+
+                 <td {...cell.getCellProps()}>
+
+                   {// Render the cell contents
+
+                   cell.render('Cell')}
+
+                 </td>
+
+               )
+
+             })}
+
+           </tr>
+
+         )
+
+       })}
+
+     </tbody>
+
+   </table>
     )
 }
 
