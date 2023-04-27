@@ -44,7 +44,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
       <div className="flex flex-col h-[500px]  overflow-scroll" onScroll={(e) => handleScroll(e) }>
       <table {...getTableProps()} className="w-full table">
 
-     <thead className="sticky top-0 bg-EngineeringOrange">
+     <thead className="sticky top-0 bg-EngineeringOrange text-white">
 
        {// Loop over the header rows
 
@@ -52,7 +52,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
          // Apply the header row props
 
-         <tr {...headerGroup.getHeaderGroupProps()}>
+         <tr {...headerGroup.getHeaderGroupProps()} className="bg-white">
 
            {// Loop over the headers in each row
 
@@ -60,7 +60,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
              // Apply the header cell props
 
-             <th {...column.getHeaderProps()}>
+             <th {...column.getHeaderProps()} className="text-center bg-EngineeringOrange rounded-none">
 
                {// Render the header
 
@@ -78,7 +78,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
      {/* Apply the table body props */}
 
-     <tbody {...getTableBodyProps()} className="pt-10 bg-ColumbiaBlue">
+     <tbody {...getTableBodyProps()} className="pt-10 bg-ColumbiaBlue t-white">
 
        {// Loop over the table rows
 
@@ -102,7 +102,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
                return (
 
-                 <td {...cell.getCellProps()} className="text-center">
+                 <td {...cell.getCellProps()} className="text-center bg-AirForceBlue text-white">
 
                    {// Render the cell contents
 

@@ -57,5 +57,21 @@ export default {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          'error':'#BA1200',
+          'info':'#031927',
+          'primary':'#9DD1F1',
+          'secondary':'#508AA8',
+          'accent': '#C8E0F4',
+          'success':'#FFFFFF',
+        },
+      },
+      "dark",
+      "cupcake",
+    ],
+  },
 } satisfies Config;
