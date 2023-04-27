@@ -7,7 +7,6 @@ export default () => {
     const [windowSize,setWindowSize] = useState<'small' | 'large' >()
     useEffect(() => {
         const initialWindowSize = window.innerWidth < 1024 ? 'small' : 'large'
-        console.log({initialWindowSize})
     },[])
     useEffect(() => {
         addEventListener('resize',handleResize) 
@@ -40,7 +39,6 @@ export default () => {
     )
 
     function handleResize(){
-        console.log({windowSize:window.innerWidth})
         if(window.innerWidth < 1024) setWindowSize('small')
             else{
                setWindowSize('large')

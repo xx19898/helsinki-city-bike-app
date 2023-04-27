@@ -8,7 +8,7 @@ export const journeyRouter = createTRPCRouter({
             take:100,
             skip:1,
             cursor:{
-                id:input,
+                id:input
             },
             orderBy:{
                 id:'asc'
@@ -18,6 +18,6 @@ export const journeyRouter = createTRPCRouter({
                 Station_Journey_returnStationIdToStation:true
             }
         })
-        return data
+        return {data:data,lastId:data[data.length - 1]?.id}
     })
 })

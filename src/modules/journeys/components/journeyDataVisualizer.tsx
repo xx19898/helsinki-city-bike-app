@@ -1,99 +1,27 @@
 import { Journey } from "@prisma/client"
 import {Column, useTable} from 'react-table'
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useViewport } from "~/common/hooks/useViewport"
 import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
+import { api } from "~/utils/api"
+import { journeyCursorAtom } from "../atoms/journeyAtoms"
+import { useAtom } from "jotai"
 
 interface IDataVisualizer{
-    data: JourneyWithStations[],
-    keys: {bigScreenKeys:string[],smallScreenKeys:string[]},
-    cursor: number,
-    setCursor: (newCursor:number) => void,
-    handleScrolledToTheBottom : () => void
+    data: JourneyWithStations[] | null,
+    fetchAdditionalJourneys: (fetch:boolean) => void,
 }
 
-
-
-export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisualizer) => {
+export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
     const width = useViewport().width
-    console.log({width})
-    console.log({data})
-    const rowData = useMemo(() => data, [])
 
-    const columnsBigScreen:Column[] = useMemo(
-        () => [
-          {
-            Header: 'Id',
-            accessor: 'id', // accessor is the "key" in the data
-          },
-          {
-            Header: 'Departure',
-            accessor: (row:any) => row.departure.toDateString(),
-          },
-          {
-            Header: 'Return',
-            accessor: (row:any) => row.return.toDateString(),
-            
-          },
-          {
-            Header: 'Departure Station Id',
-            accessor: 'departureStationId',
-          },
-          {
-            Header: 'Return Station Id',
-            accessor: 'returnStationId',
-          },
-          {
-            Header: 'Distance',
-            accessor: 'coveredDistance',
-          },
-          {
-            Header: 'Duration',
-            accessor: 'duration',
-          },
-          {
-            Header: 'Departure Station Name',
-            accessor: 'Station_Journey_departureStationIdToStation.name_FIN',
-          },
-          {
-            Header: 'Return Station Name',
-            accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
-          },
-        ],
-        []
-      )
+    const rowData = useMemo(() => data, [data])
 
-      
-    const columnsSmallScreen:Column[] = useMemo(
-        () => [
-          {
-            Header: 'Id',
-            accessor: 'id', // accessor is the "key" in the data
-          },
-          {
-            Header: 'Distance',
-            accessor: 'coveredDistance',
-          },
-          {
-            Header: 'Duration',
-            accessor: 'duration',
-          },
-          {
-            Header: 'Departure Station Name',
-            accessor: 'Station_Journey_departureStationIdToStation.name_FIN',
-          },
-          {
-            Header: 'Return Station Name',
-            accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
-          },
-        ],
-        []
-      )
+    const {columnsBigScreen,columnsSmallScreen} = getColumns()
 
     const columns = width > 1024 ? columnsBigScreen : columnsSmallScreen
 
-
-    const tableInstance = useTable({columns:columns,data:rowData})
+    const tableInstance = useTable({columns:columns,data: rowData === null ? [] : rowData})
 
     const {
       getTableProps,
@@ -105,18 +33,18 @@ export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisu
 
     const handleScroll = (event:React.UIEvent<HTMLElement>) => {
         if(event.currentTarget === null) throw new Error("problems with scroll on journeys")
-        console.log('SCROLLED TO BOTTOM')
         const height = event.currentTarget.clientHeight
         const barHeight = event.currentTarget.scrollHeight
         const scrollTop = event.currentTarget.scrollTop;
         const scrolledInProcents = ((scrollTop + height) / barHeight) * 100
-        if(scrolledInProcents === 100) handleScrolledToTheBottom()
+        if(scrolledInProcents === 100) fetchAdditionalJourneys(true)
       };
 
     return(
-      <table {...getTableProps()}>
+      <div className="flex flex-col h-[500px]  overflow-scroll" onScroll={(e) => handleScroll(e) }>
+      <table {...getTableProps()} className="w-full table">
 
-     <thead>
+     <thead className="sticky top-0 bg-EngineeringOrange">
 
        {// Loop over the header rows
 
@@ -150,7 +78,7 @@ export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisu
 
      {/* Apply the table body props */}
 
-     <tbody {...getTableBodyProps()}>
+     <tbody {...getTableBodyProps()} className="pt-10 bg-ColumbiaBlue">
 
        {// Loop over the table rows
 
@@ -164,7 +92,7 @@ export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisu
 
            // Apply the row props
 
-           <tr {...row.getRowProps()}>
+           <tr {...row.getRowProps()} >
 
              {// Loop over the rows cells
 
@@ -174,7 +102,7 @@ export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisu
 
                return (
 
-                 <td {...cell.getCellProps()}>
+                 <td {...cell.getCellProps()} className="text-center">
 
                    {// Render the cell contents
 
@@ -195,6 +123,81 @@ export default ({data,keys,cursor,setCursor,handleScrolledToTheBottom}:IDataVisu
      </tbody>
 
    </table>
+   </div>
     )
+}
+
+function getColumns(){
+  const columnsBigScreen:Column[] = useMemo(
+    () => [
+      {
+        Header: 'Id',
+        accessor: 'id', // accessor is the "key" in the data
+      },
+      {
+        Header: 'Departure',
+        accessor: (row:any) => row.departure.toDateString(),
+      },
+      {
+        Header: 'Return',
+        accessor: (row:any) => row.return.toDateString(),
+        
+      },
+      {
+        Header: 'Departure Station Id',
+        accessor: 'departureStationId',
+      },
+      {
+        Header: 'Return Station Id',
+        accessor: 'returnStationId',
+      },
+      {
+        Header: 'Distance',
+        accessor: 'coveredDistance',
+      },
+      {
+        Header: 'Duration',
+        accessor: 'duration',
+      },
+      {
+        Header: 'Departure Station Name',
+        accessor: 'Station_Journey_departureStationIdToStation.name_FIN',
+      },
+      {
+        Header: 'Return Station Name',
+        accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
+      },
+    ],
+    []
+  )
+
+  
+const columnsSmallScreen:Column[] = useMemo(
+    () => [
+      {
+        Header: 'Id',
+        accessor: 'id', // accessor is the "key" in the data
+      },
+      {
+        Header: 'Distance',
+        accessor: 'coveredDistance',
+      },
+      {
+        Header: 'Duration',
+        accessor: 'duration',
+      },
+      {
+        Header: 'Departure Station Name',
+        accessor: 'Station_Journey_departureStationIdToStation.name_FIN',
+      },
+      {
+        Header: 'Return Station Name',
+        accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
+      },
+    ],
+    []
+  )
+
+  return {columnsBigScreen,columnsSmallScreen}
 }
 
