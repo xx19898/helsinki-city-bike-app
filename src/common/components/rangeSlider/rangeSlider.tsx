@@ -17,11 +17,12 @@ const palette = {
 interface IRangeSlider{
     min: number,
     max: number,
-    valueCallback: (newValue:number) => void,
+    value: number[],
+    valueCallback: (newValue:number[]) => void,
 }
 
-export default ({max,min,valueCallback}:IRangeSlider) => {
-    const [value,setValue] = useState<number[]>([min,max])
+export default ({max,min,value,valueCallback}:IRangeSlider) => {
+    
     
     const MIN_DIST = 1
 
@@ -34,17 +35,16 @@ export default ({max,min,valueCallback}:IRangeSlider) => {
         if(newValue[0] === undefined || newValue[1] === undefined) return
         
         if(activeThumb === 0){
-            setValue([Math.min(newValue[0],value[1] as number - MIN_DIST),value[1] as number])
+            valueCallback([Math.min(newValue[0],value[1] as number - MIN_DIST),value[1] as number])
         }else{
-            setValue([value[0] as number,Math.max(newValue[1],value[0] as number + MIN_DIST)])
+            valueCallback([value[0] as number,Math.max(newValue[1],value[0] as number + MIN_DIST)])
         }
     }
     
     return(
         <ThemeProvider theme={theme}>
             <Slider
-            sx={{color:'primary.main'}}
-            className="w-[80%] px-4"
+            className="w-[80%] px-4 "
             getAriaLabel={() => 'Temperature range'}
             defaultValue={[0,100]}
             value={value}

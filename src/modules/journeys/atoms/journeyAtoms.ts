@@ -3,3 +3,4 @@ import { JourneyWithStations } from "~/server/service/dataAccessService/dataAcce
 
 export const journeyDataAtom = atom<JourneyWithStations[] | null>(null)
 export const journeyCursorAtom = atom<number>(0)
+export const journeyStationsAtom = atom<string[]>([])

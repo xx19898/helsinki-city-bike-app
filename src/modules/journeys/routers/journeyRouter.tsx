@@ -19,5 +19,5 @@ export const journeyRouter = createTRPCRouter({
             }
         })
         return {data:data,lastId:data[data.length - 1]?.id}
-    })
+    }),
 })

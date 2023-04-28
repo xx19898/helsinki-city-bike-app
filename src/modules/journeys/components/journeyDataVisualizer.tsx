@@ -3,9 +3,6 @@ import {Column, useTable} from 'react-table'
 import { useEffect, useMemo, useState } from "react"
 import { useViewport } from "~/common/hooks/useViewport"
 import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
-import { api } from "~/utils/api"
-import { journeyCursorAtom } from "../atoms/journeyAtoms"
-import { useAtom } from "jotai"
 
 interface IDataVisualizer{
     data: JourneyWithStations[] | null,
@@ -23,7 +20,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
     const tableInstance = useTable({columns:columns,data: rowData === null ? [] : rowData})
 
-    const {
+    const{
       getTableProps,
       getTableBodyProps,
       headerGroups,
@@ -44,7 +41,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
       <div className="flex flex-col h-[500px]  overflow-scroll" onScroll={(e) => handleScroll(e) }>
       <table {...getTableProps()} className="w-full table">
 
-     <thead className="sticky top-0 bg-EngineeringOrange text-white">
+      <thead className="sticky top-0 bg-EngineeringOrange text-white">
 
        {// Loop over the header rows
 

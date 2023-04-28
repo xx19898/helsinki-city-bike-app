@@ -1,15 +1,20 @@
+import { useAtomValue } from "jotai"
 import { useState } from "react"
+import { journeyStationsAtom } from "../atoms/journeyAtoms"
 
 
 
 export default () => {
-    const [idFilter, setIdFilter] = useState<number | null>(null)
+    
+    const [distanceRange,setDistanceRange] = useState<number[]>([0,10000])
+    const [durationRange,setDurationRange] = useState<number[]>([0,10000])
 
-    function onIdInput(input:string){
-        if(input === '') setIdFilter(null)
-        if(typeof input != 'string') return false
-        if(!isNaN(parseInt(input)) && !isNaN(parseFloat(input))) setIdFilter(parseInt(input)) 
+    const stations = useAtomValue(journeyStationsAtom)
+
+
+    return {
+        distanceRange,setDistanceRange,
+        durationRange,setDurationRange,
+        stations
     }
-
-    return {idFilter,onIdInput}
 }
