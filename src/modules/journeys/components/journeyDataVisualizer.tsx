@@ -3,6 +3,7 @@ import {Column, useTable} from 'react-table'
 import { useEffect, useMemo, useState } from "react"
 import { useViewport } from "~/common/hooks/useViewport"
 import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
+import dayjs from "dayjs"
 
 interface IDataVisualizer{
     data: JourneyWithStations[] | null,
@@ -16,7 +17,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
     const {columnsBigScreen,columnsSmallScreen} = getColumns()
 
-    const columns = width > 1024 ? columnsBigScreen : columnsSmallScreen
+    const columns = width > 600 ? columnsBigScreen : columnsSmallScreen
 
     const tableInstance = useTable({columns:columns,data: rowData === null ? [] : rowData})
 
@@ -133,11 +134,11 @@ function getColumns(){
       },
       {
         Header: 'Departure',
-        accessor: (row:any) => row.departure.toDateString(),
+        accessor: (row:any) => dayjs(row.departure).format('DD/MM/YYYY'),
       },
       {
         Header: 'Return',
-        accessor: (row:any) => row.return.toDateString(),
+        accessor: (row:any) => dayjs(row.return).format('DD/MM/YYYY hh:mm:ss'),
         
       },
       {

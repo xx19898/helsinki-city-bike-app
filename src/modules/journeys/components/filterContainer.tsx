@@ -7,11 +7,15 @@ export default () => {
         distanceRange,setDistanceRange,
         durationRange,setDurationRange,
         stations,
+        setChosenDepartureStation,
+        setChosenReturnStation
         } = useFilterComponent()
 
     return(
         <FilterComponent 
         distanceValue={distanceRange} distanceSetValueCallback={setDistanceRange}
-        durationValue={durationRange} setDurationCallback={setDurationRange} stations={stations}/>
+        durationValue={durationRange} setDurationCallback={setDurationRange} stations={stations}
+        setChosenDepartureStation={setChosenDepartureStation}
+        setChosenReturnStation={setChosenReturnStation}/>
     )
 }

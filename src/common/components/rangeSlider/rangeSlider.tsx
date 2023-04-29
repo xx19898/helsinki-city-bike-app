@@ -44,7 +44,6 @@ export default ({max,min,value,valueCallback}:IRangeSlider) => {
     return(
         <ThemeProvider theme={theme}>
             <Slider
-            className="w-[80%] px-4 "
             getAriaLabel={() => 'Temperature range'}
             defaultValue={[0,100]}
             value={value}

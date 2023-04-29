@@ -8,6 +8,9 @@ export default () => {
     
     const [distanceRange,setDistanceRange] = useState<number[]>([0,10000])
     const [durationRange,setDurationRange] = useState<number[]>([0,10000])
+    const [chosenDepartureStation,setChosenDepartureStation] = useState<string>('NONE')
+    const [chosenReturnStation,setChosenReturnStation] = useState<string>('NONE')
+    
 
     const stations = useAtomValue(journeyStationsAtom)
 
@@ -15,6 +18,11 @@ export default () => {
     return {
         distanceRange,setDistanceRange,
         durationRange,setDurationRange,
-        stations
+        stations,
+        setChosenDepartureStation,
+        setChosenReturnStation,
+        chosenDepartureStation,
+        chosenReturnStation,
+        
     }
 }

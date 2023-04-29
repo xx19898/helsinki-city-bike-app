@@ -10,10 +10,17 @@ export default () => {
     const {
            distanceRange,setDistanceRange,
            durationRange,setDurationRange,
-           stations
+           stations,
+           chosenDepartureStation,
+           chosenReturnStation
         } = useFilterComponent()
 
-    const sortedData = journeyData === null ? [] : sortData({data:journeyData,idFilter})
+    const sortedData = journeyData === null ? [] : sortData(
+        {
+            data:journeyData,idFilter,distanceRange,durationRange,
+                 chosenDepartureStation,chosenReturnStation
+        }
+        )
     
 
     return(

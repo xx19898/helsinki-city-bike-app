@@ -1,5 +1,7 @@
-import { Grid } from "@mui/material"
+import { Autocomplete, TextField } from "@mui/material"
+import { SyntheticEvent, useMemo } from "react"
 import RangeSlider from "~/common/components/rangeSlider/rangeSlider"
+
 
 
 interface RangeSlider{
@@ -10,30 +12,63 @@ interface RangeSlider{
     durationValue: number[],
 
     stations: string[]
+
+    setChosenDepartureStation: (newValue:string) => void,
+    setChosenReturnStation: (newValue:string) => void,
 }
-export default ({distanceSetValueCallback,distanceValue,durationValue,setDurationCallback,stations}:RangeSlider) => {
+
+export default ({
+    distanceSetValueCallback,
+    distanceValue,durationValue,
+    setDurationCallback,stations,
+    setChosenDepartureStation,setChosenReturnStation
+}:RangeSlider) => {
+    const stationLabels = useMemo(() => {
+        const formattedStations =  stations.map(station => { return {label:station}})
+        formattedStations.push({label:'NONE'})
+        return formattedStations
+    },[stations])
 
     return(
-    <section className="w-full text-RichBlack flex flex-col justify-center items-center">
-        <Grid container justifyContent={'center'} alignItems={'center'} width={'100%'} className="w-full">
-            <Grid container xs={10} gap={1} direction={'column'} sm={10} md={12}  justifyContent={'center'} alignItems={'center'} width={'100%'}>
-                <span>Duration</span>
-                <RangeSlider min={0} max={10000} value={durationValue} valueCallback={setDurationCallback}/>
-                <span>Distance</span>
-                <RangeSlider max={10000} min={0} valueCallback={distanceSetValueCallback} value={distanceValue}/>
-                <span>Departure Station</span>
-                
-                <span>Return Statio</span>
-            </Grid>
-        </Grid>
+    <section className="w-full text-RichBlack flex flex-col justify-center items-center px-[2em]">
+                <div className="w-full sm:flex sm:flex-col justify-center items-center md:flex-row">
+                    <div className="w-full mx-4 flex flex-col justify-center items-center">
+                        <span>Duration</span>
+                        <RangeSlider min={0} max={10000} value={durationValue} valueCallback={setDurationCallback}/>    
+                    </div>
+                    <div className="w-full mx-4 flex flex-col justify-center items-center">
+                        <span>Distance</span>
+                        <RangeSlider max={10000} min={0} valueCallback={distanceSetValueCallback} value={distanceValue} />
+                    </div>
+                </div>
+                <div className="w-full sm:flex sm:flex-col sm:gap-10 justify-center items-center md:flex-row my-4">
+                    <Autocomplete
+                    disablePortal
+                    placeholder="Departure Station"
+                    id="combo-box-demo"
+                    defaultValue={{label:'NONE CHOSEN'}}
+                    onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
+                        if(value != null) setChosenDepartureStation(value.label)
+                        }}
+                    options={stationLabels}
+                    sx={{ width: '100%', }}
+                    renderInput={(params:any) => <TextField onChange={(e) => setChosenDepartureStation(e.target.value)} {...params} label="Station" />}
+                    />
+                    <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    defaultValue={{label:'NONE CHOSEN'}}
+                    placeholder="Return Station"
+                    onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
+                        if(value != null) setChosenReturnStation(value.label)
+                        }}
+                    options={stationLabels}
+                    sx={{ width: '100%' }}
+                    renderInput={
+                        (params:any) => <TextField {...params} onChange={(e) => setChosenReturnStation(e.target.value)} label="Station" />
+                    }
+                    />  
+                </div>
     </section>    
     )
 }
-
-            //Departure Station
-
-            //Return Station
-
-            //Departure
-
-            //Return
