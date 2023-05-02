@@ -1,19 +1,42 @@
 import { useAtomValue } from "jotai"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { journeyStationsAtom } from "../atoms/journeyAtoms"
+import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
+import { sortJourneyData } from "../utils/journeyUtils"
 
 
 
-export default () => {
+export default ({journeyData,idFilter}:{journeyData:JourneyWithStations[],idFilter:number | null}) => {
     
     const [distanceRange,setDistanceRange] = useState<number[]>([0,10000])
     const [durationRange,setDurationRange] = useState<number[]>([0,10000])
-    const [chosenDepartureStation,setChosenDepartureStation] = useState<string>('NONE')
-    const [chosenReturnStation,setChosenReturnStation] = useState<string>('NONE')
-    
-
+    const [chosenDepartureStation,setChosenDepartureStation] = useState<string | null>(null)
+    const [chosenReturnStation,setChosenReturnStation] = useState<string | null>(null)
     const stations = useAtomValue(journeyStationsAtom)
+    console.log({chosenDepartureStation})
+    console.log({chosenReturnStation})
+    console.log('RERENDERING USEFILTERCOMP')
 
+    const sortedData = useMemo(() => {
+        console.log('recomputing')
+        return journeyData === null ? [] : sortJourneyData(
+            {
+                data: journeyData,
+                chosenDepartureStation:chosenDepartureStation,
+                chosenReturnStation: chosenReturnStation,
+                distanceRange: distanceRange,
+                durationRange: durationRange,
+                idFilter: idFilter,
+            }
+            )
+    },[
+        journeyData,
+        chosenDepartureStation,
+        chosenReturnStation,
+        distanceRange,
+        durationRange,
+        idFilter
+    ])
 
     return {
         distanceRange,setDistanceRange,
@@ -23,6 +46,6 @@ export default () => {
         setChosenReturnStation,
         chosenDepartureStation,
         chosenReturnStation,
-        
+        sortedData
     }
 }

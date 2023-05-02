@@ -22,6 +22,7 @@
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
     "@types/react-table": "^7.7.14",
+    "babel-jest": "^29.5.0",
     "babel-plugin-superjson-next": "^0.4.5",
     "daisyui": "^2.51.6",
     "dayjs": "^1.11.7",
@@ -35,9 +36,12 @@
     "react-table": "^7.8.0",
     "react-transition-group": "^4.4.5",
     "superjson": "^1.12.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.21.5",
     "@types/eslint": "^8.21.3",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.5",

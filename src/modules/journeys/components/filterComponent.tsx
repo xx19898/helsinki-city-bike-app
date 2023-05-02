@@ -13,8 +13,8 @@ interface RangeSlider{
 
     stations: string[]
 
-    setChosenDepartureStation: (newValue:string) => void,
-    setChosenReturnStation: (newValue:string) => void,
+    setChosenDepartureStation: (newValue:string | null) => void,
+    setChosenReturnStation: (newValue:string | null) => void,
 }
 
 export default ({
@@ -23,9 +23,9 @@ export default ({
     setDurationCallback,stations,
     setChosenDepartureStation,setChosenReturnStation
 }:RangeSlider) => {
+    console.log('REPAINTInG FIlTER COmP')
     const stationLabels = useMemo(() => {
         const formattedStations =  stations.map(station => { return {label:station}})
-        formattedStations.push({label:'NONE'})
         return formattedStations
     },[stations])
 
@@ -48,11 +48,13 @@ export default ({
                     id="combo-box-demo"
                     defaultValue={{label:'NONE CHOSEN'}}
                     onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
-                        if(value != null) setChosenDepartureStation(value.label)
+                        if(value === null) setChosenDepartureStation(null)
+                        else if(value != null) setChosenDepartureStation(value.label)
                         }}
+                    
                     options={stationLabels}
                     sx={{ width: '100%', }}
-                    renderInput={(params:any) => <TextField onChange={(e) => setChosenDepartureStation(e.target.value)} {...params} label="Station" />}
+                    renderInput={(params:any) => <TextField onChange={(e) => setChosenDepartureStation(e.target.value)} {...params} label="Departure Station" onCl />}
                     />
                     <Autocomplete
                     disablePortal
@@ -60,7 +62,8 @@ export default ({
                     defaultValue={{label:'NONE CHOSEN'}}
                     placeholder="Return Station"
                     onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
-                        if(value != null) setChosenReturnStation(value.label)
+                        if(value === null) setChosenReturnStation(null)
+                        else if(value != null) setChosenReturnStation(value.label)
                         }}
                     options={stationLabels}
                     sx={{ width: '100%' }}

@@ -2,25 +2,24 @@ import DataVisualizer from "~/modules/journeys/components/journeyDataVisualizer"
 import SearchIcon from "~/resources/icons/searchIcon"
 import useJourneyMainComponent from "../hooks/useJourneyMainComponent"
 import useFilterComponent from "./useFilterComponent"
-import { sortData } from "../utils/journeyUtils"
-import FilterContainer from "./filterContainer"
+import { sortJourneyData } from "../utils/journeyUtils"
+import { useMemo } from "react"
+import FilterComponent from "./filterComponent"
 
 export default () => {
     const {fetchAdditionalJourneys,journeyData,idFilter,onIdInput} = useJourneyMainComponent()
     const {
            distanceRange,setDistanceRange,
            durationRange,setDurationRange,
-           stations,
            chosenDepartureStation,
-           chosenReturnStation
-        } = useFilterComponent()
+           chosenReturnStation,
+           setChosenDepartureStation,
+           setChosenReturnStation,
+           stations,
+           sortedData
+        } = useFilterComponent({idFilter:idFilter,journeyData:journeyData === null ? [] : journeyData})
 
-    const sortedData = journeyData === null ? [] : sortData(
-        {
-            data:journeyData,idFilter,distanceRange,durationRange,
-                 chosenDepartureStation,chosenReturnStation
-        }
-        )
+    console.log('REPAINTING JOURNEY MAIN COMP')
     
 
     return(
@@ -29,7 +28,11 @@ export default () => {
                 <input value={idFilter === null ? '' : idFilter} className="pl-5 w-full h-[3.5rem] focus:outline-none rounded-xl" placeholder="Search by id..." onChange={(e) => onIdInput(e.target.value)}>
                 </input>
                 <SearchIcon />
-                <FilterContainer />
+                <FilterComponent 
+                distanceValue={distanceRange} distanceSetValueCallback={setDistanceRange}
+                durationValue={durationRange} setDurationCallback={setDurationRange} stations={stations}
+                setChosenDepartureStation={setChosenDepartureStation}
+                setChosenReturnStation={setChosenReturnStation}/>
                 <DataVisualizer data={sortedData} fetchAdditionalJourneys={fetchAdditionalJourneys} />
                 </div>
         </section>
