@@ -22,6 +22,8 @@ function sortJourneyData({
     let sortedData = sortById({data:data,id:idFilter})
     sortedData = sortByDepartureStation({data:sortedData,chosenDepartureStation:chosenDepartureStation})
     sortedData = sortByReturnStation({data:sortedData,chosenReturnStation:chosenReturnStation})
+    sortedData = sortByDistance({data:sortedData,distanceRange:distanceRange})
+    sortedData = sortByDistance({data:sortedData,distanceRange:durationRange})
     return sortedData
 }
 
@@ -38,6 +40,21 @@ function sortJourneyData({
     function sortByReturnStation({data,chosenReturnStation}:{data:JourneyWithStations[],chosenReturnStation:string | null}){
         if( chosenReturnStation === null ) return data
         return data.filter((journey) => journey.Station_Journey_returnStationIdToStation.name_FIN === chosenReturnStation)
+    }
+
+    function sortByDistance({data,distanceRange}:{data:JourneyWithStations[],distanceRange:number[]}){
+        if(distanceRange[0] === undefined || distanceRange[1] === undefined) throw new Error('distance range undefined')
+        const lowestValue = distanceRange[0]
+        const highestValue = distanceRange[1]
+        return data.filter((journey) => journey.coveredDistance >= lowestValue && journey.coveredDistance <= highestValue)
+    }
+
+    
+    function sortByDuration({data,durationRange}:{data:JourneyWithStations[],durationRange:number[]}){
+        if(durationRange[0] === undefined || durationRange[1] === undefined) throw new Error('duration range undefined')
+        const lowestValue = durationRange[0]
+        const highestValue = durationRange[1]
+        return data.filter((journey) => journey.duration >= lowestValue && journey.coveredDistance <= highestValue)
     }
 
     

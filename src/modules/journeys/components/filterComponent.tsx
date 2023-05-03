@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material"
-import { SyntheticEvent, useMemo } from "react"
+import { DragEventHandler, FormEventHandler, SyntheticEvent, useMemo } from "react"
 import RangeSlider from "~/common/components/rangeSlider/rangeSlider"
 
 
@@ -46,7 +46,6 @@ export default ({
                     disablePortal
                     placeholder="Departure Station"
                     id="combo-box-demo"
-                    defaultValue={{label:'NONE CHOSEN'}}
                     onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
                         if(value === null) setChosenDepartureStation(null)
                         else if(value != null) setChosenDepartureStation(value.label)
@@ -59,16 +58,16 @@ export default ({
                     <Autocomplete
                     disablePortal
                     id="combo-box-demo"
-                    defaultValue={{label:'NONE CHOSEN'}}
                     placeholder="Return Station"
-                    onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
+                    onChange={(event:FormEventHandler<HTMLDivElement>,value: {label:string} | null) => {
+                        //TODO: debounce both sliders to improve performance 
                         if(value === null) setChosenReturnStation(null)
                         else if(value != null) setChosenReturnStation(value.label)
                         }}
                     options={stationLabels}
                     sx={{ width: '100%' }}
                     renderInput={
-                        (params:any) => <TextField {...params} onChange={(e) => setChosenReturnStation(e.target.value)} label="Station" />
+                        (params:any) => <TextField {...params} onChange={(e) => setChosenReturnStation(e.target.value)} label="Return Station" />
                     }
                     />  
                 </div>

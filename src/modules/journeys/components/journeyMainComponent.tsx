@@ -23,7 +23,7 @@ export default () => {
     
 
     return(
-        <section className="w-[90%] mt-10 min-h-[50%] bg-BabyBlue rounded-md overflow-hidden">
+        <section className="w-[90%] mt-10 min-h-[50%] bg-BabyBlue rounded-md overflow-hidden mb-10">
                 <div className="relative w-[90%] mx-auto bg-white mt-10 rounded-xl">
                 <input value={idFilter === null ? '' : idFilter} className="pl-5 w-full h-[3.5rem] focus:outline-none rounded-xl" placeholder="Search by id..." onChange={(e) => onIdInput(e.target.value)}>
                 </input>

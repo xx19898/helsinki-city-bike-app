@@ -17,7 +17,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
     const {columnsBigScreen,columnsSmallScreen} = getColumns()
 
-    const columns = width > 600 ? columnsBigScreen : columnsSmallScreen
+    const columns = width > 1024 ? columnsBigScreen : columnsSmallScreen
 
     const tableInstance = useTable({columns:columns,data: rowData === null ? [] : rowData})
 
@@ -35,14 +35,15 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
         const barHeight = event.currentTarget.scrollHeight
         const scrollTop = event.currentTarget.scrollTop;
         const scrolledInProcents = ((scrollTop + height) / barHeight) * 100
-        if(scrolledInProcents === 100) fetchAdditionalJourneys(true)
+        if(scrolledInProcents >= 92 ) fetchAdditionalJourneys(true)
+        //TODO: make it so that if ANY of the filters are active, no fetching occurs, add button to turn off all of the filters
       };
 
     return(
-      <div className="flex flex-col h-[500px]  overflow-scroll" onScroll={(e) => handleScroll(e) }>
-      <table {...getTableProps()} className="w-full table">
+      <div className="h-[400px] overflow-y-scroll overflow-x-auto w-full" onScroll={(e) => handleScroll(e) }>
+      <table {...getTableProps()} className="w-full table overflow-y-scroll h-full mb-10">
 
-      <thead className="sticky top-0 bg-EngineeringOrange text-white">
+      <thead className="sticky top-0 bg-EngineeringOrange text-white overflow-x-scroll">
 
        {// Loop over the header rows
 
@@ -50,7 +51,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
          // Apply the header row props
 
-         <tr {...headerGroup.getHeaderGroupProps()} className="bg-white">
+         <tr {...headerGroup.getHeaderGroupProps()} className="bg-white ">
 
            {// Loop over the headers in each row
 
@@ -58,7 +59,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
              // Apply the header cell props
 
-             <th {...column.getHeaderProps()} className="text-center bg-EngineeringOrange rounded-none">
+             <th {...column.getHeaderProps()} className="text-center bg-EngineeringOrange rounded-none break-words">
 
                {// Render the header
 
@@ -100,7 +101,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
                return (
 
-                 <td {...cell.getCellProps()} className="text-center bg-AirForceBlue text-white">
+                 <td {...cell.getCellProps()} className="text-center bg-AirForceBlue p-0 m-0 text-white w-fit">
 
                    {// Render the cell contents
 
@@ -130,7 +131,7 @@ function getColumns(){
     () => [
       {
         Header: 'Id',
-        accessor: 'id', // accessor is the "key" in the data
+        accessor: 'id', 
       },
       {
         Header: 'Departure',
@@ -174,7 +175,7 @@ const columnsSmallScreen:Column[] = useMemo(
     () => [
       {
         Header: 'Id',
-        accessor: 'id', // accessor is the "key" in the data
+        accessor: 'id', 
       },
       {
         Header: 'Distance',
