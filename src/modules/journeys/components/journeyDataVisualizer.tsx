@@ -36,12 +36,12 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
         const scrollTop = event.currentTarget.scrollTop;
         const scrolledInProcents = ((scrollTop + height) / barHeight) * 100
         if(scrolledInProcents >= 92 ) fetchAdditionalJourneys(true)
-        //TODO: make it so that if ANY of the filters are active, no fetching occurs, add button to turn off all of the filters
+        //TODO: make it so that if ANY of the filters are active, no fetching occurs, add button to turn off all of
       };
 
     return(
       <div className="h-[400px] overflow-y-scroll overflow-x-auto w-full" onScroll={(e) => handleScroll(e) }>
-      <table {...getTableProps()} className="w-full table overflow-y-scroll h-full mb-10">
+      <table {...getTableProps()} className="w-full table overflow-y-scroll h-auto mb-10">
 
       <thead className="sticky top-0 bg-EngineeringOrange text-white overflow-x-scroll">
 

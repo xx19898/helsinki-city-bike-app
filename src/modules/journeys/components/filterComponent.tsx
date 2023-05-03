@@ -1,5 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material"
-import { DragEventHandler, FormEventHandler, SyntheticEvent, useMemo } from "react"
+import { debounce } from "lodash"
+import { DragEventHandler, FormEventHandler, SyntheticEvent, useCallback, useMemo } from "react"
 import RangeSlider from "~/common/components/rangeSlider/rangeSlider"
 
 
@@ -59,7 +60,7 @@ export default ({
                     disablePortal
                     id="combo-box-demo"
                     placeholder="Return Station"
-                    onChange={(event:FormEventHandler<HTMLDivElement>,value: {label:string} | null) => {
+                    onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
                         //TODO: debounce both sliders to improve performance 
                         if(value === null) setChosenReturnStation(null)
                         else if(value != null) setChosenReturnStation(value.label)
@@ -73,4 +74,6 @@ export default ({
                 </div>
     </section>    
     )
+
+
 }
