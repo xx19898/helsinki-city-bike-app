@@ -33,6 +33,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-, "babel.config.cjs", "jest.config.cjs"  ],
+, "babel.config.cjs", "jest.config.cjs", "jest.config.cjs"  ],
   "exclude": ["node_modules"]
 }

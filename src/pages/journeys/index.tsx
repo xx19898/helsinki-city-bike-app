@@ -27,6 +27,7 @@ const JourneysViewerPage = ({journeys,stationNames}:InferGetServerSidePropsType<
     
     return(
         <div className="w-full min-h-screen h-[500px] flex flex-col justify-center items-center overflow-auto">
+            <h1 className="text-white text-5xl mt-10 font-bold">Journeys</h1>
             <JourneyMainComponent/>
         </div>
         )
