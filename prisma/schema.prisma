@@ -18,7 +18,7 @@ model Journey {
   Station_Journey_returnStationIdToStation    Station  @relation("Journey_returnStationIdToStation", fields: [returnStationId], references: [id])
 }
 
-model Station {
+model Station{
   fId                                         Int
   id                                          Int       @id
   name_FIN                                    String

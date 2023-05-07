@@ -10,10 +10,14 @@ interface IDataVisualizer{
     fetchAdditionalJourneys: (fetch:boolean) => void,
 }
 
+
+
 export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
     const width = useViewport().width
 
-    const rowData = useMemo(() => data, [data])
+    const rowData = useMemo(() => data,
+     [data]
+     )
 
     const {columnsBigScreen,columnsSmallScreen} = getColumns()
 
@@ -61,9 +65,9 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
              <th {...column.getHeaderProps()} className="text-center bg-EngineeringOrange rounded-none break-words">
 
-               {// Render the header
-
-               column.render('Header')}
+               {
+               column.render('Header')
+               }
 
              </th>
 
