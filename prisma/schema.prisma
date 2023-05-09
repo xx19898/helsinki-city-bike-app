@@ -1,12 +1,14 @@
-datasource db {
+datasource db{
   provider = "postgresql"
   url      = "postgresql://postgres:safepassword2023@localhost:5432/helsinki-city-bike-app"
 }
-generator client {
-  provider = "prisma-client-js"
+
+generator client{
+  provider        = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
 }
 
-model Journey {
+model Journey{
   id                                          Int      @id @default(autoincrement())
   departure                                   DateTime
   return                                      DateTime

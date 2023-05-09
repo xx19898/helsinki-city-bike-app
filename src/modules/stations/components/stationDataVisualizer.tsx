@@ -29,7 +29,16 @@ export default ({data}:{data:Station[]}) => {
                 },{
                     Header: 'Capacity',
                     accessor:'capacity'
-                },{
+                },
+                {
+                    Header: 'Returns',
+                    accessor:'_count.Journey_Journey_returnStationIdToStation'
+                },
+                {
+                    Header: 'Departures',
+                    accessor:'_count.Journey_Journey_departureStationIdToStation'
+                },
+                {
                     Header: 'Coordinates',
                     columns:[{
                         Header:'x',
@@ -50,7 +59,7 @@ export default ({data}:{data:Station[]}) => {
     } = useTable({columns,data})
 
     return(
-        <div className=" text-center min-w-[80%] w-[80%] mx-auto min-h-[50px] bg-RichBlack h-screen mb-[20%] overflow-y-scroll">
+        <div className=" text-center w-full mx-auto min-h-[50px] bg-RichBlack h-screen mb-[20%] overflow-y-scroll">
             <table {...getTableProps()} className="w-full">
                 <thead className="sticky bg-EngineeringOrange top-0">
                     {headerGroups.map(headerGroup => (
