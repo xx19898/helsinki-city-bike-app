@@ -28,7 +28,7 @@ export default ({
 }:IStationFilter) => {
 
     return(
-        <Grid className="bg-white mx-auto w-full" container justifyContent="center" alignItems="center" 
+        <Grid className="bg-white mx-auto w-full rounded-t-md" container justifyContent="center" alignItems="center" 
         style={{alignItems: "center",justifyContent:'center',display:'flex',width:'100%'}}>
             <Grid item xs={12} md={6} style={{alignItems: "center",justifyContent:'center',display:'flex',width:'100%',padding:'1em'}}>
             <Autocomplete
@@ -66,24 +66,27 @@ export default ({
                 style={{width:'100%'}}
                 />
              </Grid>
-             <Grid item xs={12} 
+             <Grid item xs={12} md={6} 
              style={{alignItems: "center",gap:'2em',justifyContent:'space-between',display:'flex',width:'100%',padding:'1em'}}>
                 <p className="text-RichBlack">Sort By:</p>
                 <Select
-                className="w-[40%] bg-white"
+                className="w-full bg-white"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortBy)}
                 >                        
-                    <MenuItem value={'Number of returns'}>Number of returns</MenuItem>
-                    <MenuItem value={'Number of departures'}>Number of departures</MenuItem>
-                    <MenuItem value={'Id'}>Id</MenuItem>
-                    <MenuItem value={'Capacity'}>Capacity</MenuItem>
+                    <MenuItem value={'returns'}>Number of returns</MenuItem>
+                    <MenuItem value={'departures'}>Number of departures</MenuItem>
+                    <MenuItem value={'id'}>Id</MenuItem>
+                    <MenuItem value={'capacity'}>Capacity</MenuItem>
                 </Select>
+            </Grid>
+            <Grid item xs={12} md={6}
+            style={{alignItems: "center",gap:'2em',justifyContent:'space-between',display:'flex',width:'100%',padding:'1em'}}> 
                 <p className='text-RichBlack'>Sort Type:</p>
                 <Select
                 value={sortType}
                 onChange={(e) => setSortType(e.target.value as SortType)}
-                className="w-[20%] bg-white"
+                className="w-full bg-white"
                 >                        
                     <MenuItem value={'Ascending'}>Ascending</MenuItem>
                     <MenuItem value={'Descending'}>Descending</MenuItem>

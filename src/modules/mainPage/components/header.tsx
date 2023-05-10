@@ -25,7 +25,7 @@ export default () => {
     useAnimatedHeader({helsinkiRef:helsinkiRef,welcomeRef:welcomeRef,toRef:toRef,theRef:theRef,bikeRef:bikeRef,appRef:appRef,cityRef:cityRef})
     
     return(
-        <header className="w-auto h-auto relative">
+        <header className="w-auto h-auto mx-auto">
             <svg xmlns="http://www.w3.org/2000/svg" className="ml-[2em]" data-name="Layer 1" height={windowSize == 'large' ? '40vw' : '80vw'} viewBox="0 0 307.99 360.62">
             <text ref={welcomeRef} id="welcome" fill="#091a26" fontFamily="Inter-Medium,Inter" fontSize="66" fontWeight="500" transform="translate(0 57)"><tspan letterSpacing="-.054em">W</tspan><tspan x="61.01" y="0">elcome </tspan></text>
             <text ref={toRef} id="to" fill="#091a26" fontFamily="Inter-Medium,Inter" fontSize="66" fontWeight="500" letterSpacing=".002em" transform="translate(225.74 116.02)">t<tspan x="24.69" y="0" letterSpacing=".008em">o</tspan></text>

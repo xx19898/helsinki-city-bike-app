@@ -7,7 +7,7 @@ import { Column, useTable } from "react-table"
 export default ({data}:{data:Station[]}) => {
     console.log({data})
     const stationData = useMemo(() => {
-        data
+        return data
     },[data])
     const columns:Column[] = useMemo(() => 
             [
@@ -56,25 +56,25 @@ export default ({data}:{data:Station[]}) => {
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({columns,data})
+    } = useTable({columns,data:stationData})
 
     return(
-        <div className=" text-center w-full mx-auto min-h-[50px] bg-RichBlack h-screen mb-[20%] overflow-y-scroll">
-            <table {...getTableProps()} className="w-full">
-                <thead className="sticky bg-EngineeringOrange top-0">
+        <div className=" text-center text-white w-full mx-auto p-[1em] min-h-[50px] bg-BabyBlue h-screen mb-[20%] overflow-y-scroll">
+            <table {...getTableProps()} className="w-full rounded-[10px]">
+                <thead className="sticky bg-EngineeringOrange rounded-md top-0">
                     {headerGroups.map(headerGroup => (
-                    <tr className=" first:h-5" {...headerGroup.getHeaderGroupProps()}>
+                    <tr className=" first:h-5 h-5 rounded-md" {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                        <th className="" {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        <th className="rounded-md" {...column.getHeaderProps()}>{column.render('Header')}</th>
                         ))}
                     </tr>
                     ))}
                 </thead>
-                <tbody {...getTableBodyProps()} className="h-[200px] overflow-y-scroll">
+                <tbody {...getTableBodyProps()} className="max-h-[200px] bg-BabyBlue h-auto overflow-y-scroll">
                     {rows.map((row, i) => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()}>
+                        <tr className="max-h-5 border-solid border-RichBlack" {...row.getRowProps()}>
                         {row.cells.map(cell => {
                             return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                         })}
