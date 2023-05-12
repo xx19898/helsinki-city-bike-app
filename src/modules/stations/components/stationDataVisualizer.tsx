@@ -64,7 +64,8 @@ export default ({data}:{data:Station[]}) => {
                 <thead className="sticky bg-EngineeringOrange rounded-md top-0">
                     {headerGroups.map(headerGroup => (
                     <tr className=" first:h-5 h-5 rounded-md" {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
+                        {
+                        headerGroup.headers.map(column => (
                         <th className="rounded-md" {...column.getHeaderProps()}>{column.render('Header')}</th>
                         ))}
                     </tr>

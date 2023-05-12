@@ -39,9 +39,10 @@ export default ({
              value={name}
              onChange={(event,value,reason,details) => setName(value)}
              renderOption={(props,option) => {
-                return(<li {...props} key={uuidv4()}>
+                return(
+                <li {...props} key={uuidv4()}>
                     {option}
-                  </li>)
+                </li>)
              }}
              sx={{ width: 300 }}
              renderInput={(params) => <TextField  {...params} label="Name" />}

@@ -6,9 +6,11 @@ import BicycleIcon from "~/utils/icons/bicycleIcon";
 import Header from "~/modules/mainPage/components/header";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const nodeRef = useRef(null);
+  const router = useRouter();
   
 
   return (
@@ -32,7 +34,7 @@ const Home: NextPage = () => {
               </button>
             </li>
             <li className="w-full text-white text-xl drop-shadow-md rounded-md text-center py-5 my-5 bg-EngineeringOrange flex flex-col justify-center items-ce">
-              <button className="w-full h-full flex flex-row items-center justify-center md:gap-5 sm:gap-0">
+              <button onClick={() => router.push('/newJourney')} className="w-full h-full flex flex-row items-center justify-center md:gap-5 sm:gap-0">
                 <p className="text-xl">Add new journey</p>
                 <AddCircleIcon sx={{ fontSize: 150,color: 'white' }}/>
               </button>

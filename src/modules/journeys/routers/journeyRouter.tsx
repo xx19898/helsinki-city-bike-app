@@ -20,4 +20,14 @@ export const journeyRouter = createTRPCRouter({
         })
         return {data:data,lastId:data[data.length - 1]?.id}
     }),
+    stationNames: publicProcedure.query(async ({ctx,input}) => {
+        const data = await ctx.prisma.station.findMany({
+            take:1000,
+            select:{
+                name_FIN:true,
+            }
+        })
+        
+        return data
+    })
 })

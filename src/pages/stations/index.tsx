@@ -97,8 +97,6 @@ export default (props: {
         name:string | null,sortBy:SortBy,
         sortType:SortType
       }){
-        console.log({filterProperties:{address,name,sortBy,sortType}})
-
         let dataTemp = [...data]
         
         if(address != null && address.length > 0) dataTemp = dataTemp.filter(stationDataEntry => stationDataEntry.address === address)
