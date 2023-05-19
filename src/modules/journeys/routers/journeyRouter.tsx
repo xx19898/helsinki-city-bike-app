@@ -20,14 +20,33 @@ export const journeyRouter = createTRPCRouter({
         })
         return {data:data,lastId:data[data.length - 1]?.id}
     }),
-    stationNames: publicProcedure.query(async ({ctx,input}) => {
+    stationNamesAndIds: publicProcedure.query(async ({ctx,input}) => {
         const data = await ctx.prisma.station.findMany({
             take:1000,
             select:{
                 name_FIN:true,
+                id: true,
             }
         })
         
         return data
+    }),
+    createJourney: publicProcedure.input(
+        z.object({
+            coveredDistance: z.number(),
+            duration:z.number(),
+            
+        })
+    )
+    .mutation(async ({ctx,input}) => {
+
+        const id = ctx
+        ctx.prisma.journey.create({
+            data:{
+                coveredDistance: input.distance,
+                
+                
+            }
+        })
     })
 })
