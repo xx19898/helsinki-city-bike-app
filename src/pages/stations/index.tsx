@@ -1,5 +1,4 @@
-import { Station } from "@prisma/client";
-import { InferGetServerSidePropsType } from "next";
+import { type Station } from "@prisma/client";
 import { useMemo } from "react";
 import StationTable from "~/modules/stations/components/stationDataVisualizer"
 import StationFilter from "~/modules/stations/components/stationFilter";
@@ -34,13 +33,12 @@ export async function getServerSideProps() {
     };
   }
 
-export default (props: {
+export default function ViewStations (props: {
   stationsData: StationWithReturnAndDepartureCounts[]
-}) => {
-    type stationsData = typeof props
+}){
     const filterData = useMemo(() => {
-      let stationNames:string[] = []
-      let stationAddresses:string[] = []
+      const stationNames:string[] = []
+      const stationAddresses:string[] = []
       props.stationsData.forEach( (stationData) => {
         stationNames.push(stationData.name_FIN)
         stationAddresses.push(stationData.address)

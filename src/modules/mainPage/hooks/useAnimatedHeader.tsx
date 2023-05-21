@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { EasePack } from "gsap/all"
-import { RefObject, useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 
 interface IUseAnimatedHeader{
     helsinkiRef: RefObject<SVGTextElement>,

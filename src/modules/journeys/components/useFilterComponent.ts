@@ -1,7 +1,7 @@
 import { useAtomValue } from "jotai"
 import { useMemo, useState } from "react"
 import { journeyStationsAtom } from "../atoms/journeyAtoms"
-import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
+import { type JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
 import { sortJourneyData } from "../utils/journeyUtils"
 
 

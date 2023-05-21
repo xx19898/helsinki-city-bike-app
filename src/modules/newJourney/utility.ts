@@ -15,6 +15,7 @@ export function handleClickSubmit({departureStation,departureDate,distance,retur
     returnStation: string | null,
     returnDate: string | null,
     distance:string | null}){
+        console.log('dummy')
 }
 
 export function checkIfStationCorrect(station:string,stationInfo:  inferRouterOutputs<AppRouter>['journeys']['stationNamesAndIds']){
@@ -30,5 +31,5 @@ export function enteredDataCorrect(
         returnDate: string | null,
         distance:string | null
     }){
-        
+       console.log('dummy') 
 }

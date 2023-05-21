@@ -1,8 +1,6 @@
 import { type NextPage } from "next";
 import { Transition } from 'react-transition-group'
 import {useRef} from 'react'
-import { api } from "~/utils/api";
-import BicycleIcon from "~/utils/icons/bicycleIcon";
 import Header from "~/modules/mainPage/components/header";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Link from "next/link";
@@ -12,7 +10,6 @@ const Home: NextPage = () => {
   const nodeRef = useRef(null);
   const router = useRouter();
   
-
   return (
     <Transition nodeRef={nodeRef} addEndListener={() => console.log('END')} onEntering={() => console.log('ENTERING')} onEnter={() => console.log('ENTERING')}>
       {

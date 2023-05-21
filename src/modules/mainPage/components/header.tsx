@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import useAnimatedHeader from "../hooks/useAnimatedHeader"
-import TextLogo from "~/resources/icons/textLogo"
-import { init } from "next/dist/compiled/@vercel/og/satori"
 
-export default () => {
+export default function Header(){
     const [windowSize,setWindowSize] = useState<'small' | 'large' >()
     useEffect(() => {
         const initialWindowSize = window.innerWidth < 1024 ? 'small' : 'large'

@@ -1,10 +1,15 @@
+
+
+/* eslint-disable */
+
 import { Station } from "@prisma/client"
 import { useMemo } from "react"
 import { Column, useTable } from "react-table"
+import {v4 as uuidv} from 'uuid'
 
 
 
-export default ({data}:{data:Station[]}) => {
+export default function StationDataVisualizer({data}:{data:Station[]}){
     console.log({data})
     const stationData = useMemo(() => {
         return data
@@ -63,10 +68,10 @@ export default ({data}:{data:Station[]}) => {
             <table {...getTableProps()} className="w-full rounded-[10px]">
                 <thead className="sticky bg-EngineeringOrange rounded-md top-0">
                     {headerGroups.map(headerGroup => (
-                    <tr className=" first:h-5 h-5 rounded-md" {...headerGroup.getHeaderGroupProps()}>
+                    <tr className=" first:h-5 h-5 rounded-md" {...headerGroup.getHeaderGroupProps()} key={uuidv()}>
                         {
                         headerGroup.headers.map(column => (
-                        <th className="rounded-md" {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        <th className="rounded-md" {...column.getHeaderProps()} key={uuidv()}>{column.render('Header')}</th>
                         ))}
                     </tr>
                     ))}
@@ -75,9 +80,9 @@ export default ({data}:{data:Station[]}) => {
                     {rows.map((row, i) => {
                     prepareRow(row)
                     return (
-                        <tr className="max-h-5 border-solid border-RichBlack" {...row.getRowProps()}>
+                        <tr className="max-h-5 border-solid border-RichBlack" {...row.getRowProps()} key={uuidv()}>
                         {row.cells.map(cell => {
-                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                            return <td {...cell.getCellProps()} key={uuidv()}>{cell.render('Cell')}</td>
                         })}
                         </tr>
                     )
@@ -87,3 +92,7 @@ export default ({data}:{data:Station[]}) => {
         </div>
     )
 }
+
+
+
+/* eslint-enable */

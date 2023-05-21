@@ -1,8 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material"
-import { debounce } from "lodash"
-import { DragEventHandler, FormEventHandler, SyntheticEvent, useCallback, useMemo } from "react"
+import { type SyntheticEvent, useMemo } from "react"
 import RangeSlider from "~/common/components/rangeSlider/rangeSlider"
-
 
 
 interface RangeSlider{
@@ -18,12 +16,12 @@ interface RangeSlider{
     setChosenReturnStation: (newValue:string | null) => void,
 }
 
-export default ({
+export default function FilterComponent({
     distanceSetValueCallback,
     distanceValue,durationValue,
     setDurationCallback,stations,
     setChosenDepartureStation,setChosenReturnStation
-}:RangeSlider) => {
+}:RangeSlider){
     console.log('REPAINTInG FIlTER COmP')
     const stationLabels = useMemo(() => {
         const formattedStations =  stations.map(station => { return {label:station}})
@@ -61,7 +59,6 @@ export default ({
                     id="combo-box-demo"
                     placeholder="Return Station"
                     onChange={(event:SyntheticEvent<Element, Event>,value: {label:string} | null) => {
-                        //TODO: debounce both sliders to improve performance 
                         if(value === null) setChosenReturnStation(null)
                         else if(value != null) setChosenReturnStation(value.label)
                         }}

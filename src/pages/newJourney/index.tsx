@@ -1,27 +1,24 @@
 import { DateTimePicker } from "@mui/x-date-pickers"
-import { Autocomplete, Grid, MenuItem, Select, TextField } from "@mui/material"
+import { Autocomplete, TextField } from "@mui/material"
 import { api } from "~/utils/api"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from 'uuid';
-import { AppRouter } from "~/server/api/root";
-import stations from "../stations";
-import { inferRouterOutputs } from "@trpc/server";
 import { checkIfStationCorrect, eliminateStationNameDuplicates } from "~/modules/newJourney/utility";
-import Trpc from "../api/trpc/[trpc]";
 
 
 
 
 
 
-export default () => {
+export default function NewJourney(){
     const stationNames = api.journeys.stationNamesAndIds.useQuery()
 
+    //TODO: implement and test this
     const createNewJourney = api.journeys.createJourney.useMutation()
     
-    
+
     const stationNameIdMap = useMemo(() => {
         if(stationNames.data){
             const map = new Map<string,number>()
@@ -59,7 +56,7 @@ export default () => {
     return(
         <div className="min-h-screen w-full bg-ColumbiaBlue text-white">
             <h2 className="mx-auto mt-[400px] text-5xl font-bold text-center w-full">Create a new Journey</h2>
-            <form onSubmit={() => console.log('SUBMITTED')} className="mt-10 w-3/4 mx-auto flex flex-col justify-center items-center">
+            <form onSubmit={() => console.log('submitted')} className="mt-10 w-3/4 mx-auto flex flex-col justify-center items-center">
                         <div className="w-full flex md:flex-row  sm:flex-col 
                         items-center justify-stretch gap-2">
                             <div className="w-1/2 sm:w-full flex flex-col justify-center items-center">

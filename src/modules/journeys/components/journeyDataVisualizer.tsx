@@ -1,8 +1,13 @@
-import { Journey } from "@prisma/client"
-import {Column, useTable} from 'react-table'
-import { useEffect, useMemo, useState } from "react"
+
+
+
+/* eslint-disable */
+
+import { v4 as uuidv4 } from 'uuid';
+import {type Column, useTable} from 'react-table'
+import { useMemo } from "react"
 import { useViewport } from "~/common/hooks/useViewport"
-import { JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
+import { type JourneyWithStations } from "~/server/service/dataAccessService/dataAccessService"
 import dayjs from "dayjs"
 
 interface IDataVisualizer{
@@ -10,9 +15,7 @@ interface IDataVisualizer{
     fetchAdditionalJourneys: (fetch:boolean) => void,
 }
 
-
-
-export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
+export default function JourneyDataVisualizer ({data,fetchAdditionalJourneys}:IDataVisualizer){
     const width = useViewport().width
 
     const rowData = useMemo(() => data,
@@ -55,7 +58,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
          // Apply the header row props
 
-         <tr {...headerGroup.getHeaderGroupProps()} className="bg-white ">
+         <tr {...headerGroup.getHeaderGroupProps()} className="bg-white" key={uuidv4()}>
 
            {// Loop over the headers in each row
 
@@ -63,7 +66,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
              // Apply the header cell props
 
-             <th {...column.getHeaderProps()} className="text-center bg-EngineeringOrange rounded-none break-words">
+             <th {...column.getHeaderProps()} key={uuidv4()} className="text-center bg-EngineeringOrange rounded-none break-words">
 
                {
                column.render('Header')
@@ -95,7 +98,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
            // Apply the row props
 
-           <tr {...row.getRowProps()} >
+           <tr {...row.getRowProps()} key={uuidv4()}>
 
              {// Loop over the rows cells
 
@@ -105,7 +108,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 
                return (
 
-                 <td {...cell.getCellProps()} className="text-center bg-AirForceBlue p-0 m-0 text-white w-fit">
+                 <td {...cell.getCellProps()} key={uuidv4()} className="text-center bg-AirForceBlue p-0 m-0 text-white w-fit">
 
                    {// Render the cell contents
 
@@ -131,8 +134,7 @@ export default ({data,fetchAdditionalJourneys}:IDataVisualizer) => {
 }
 
 function getColumns(){
-  const columnsBigScreen:Column[] = useMemo(
-    () => [
+  const columnsBigScreen:Column[] = [
       {
         Header: 'Id',
         accessor: 'id', 
@@ -170,13 +172,10 @@ function getColumns(){
         Header: 'Return Station Name',
         accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
       },
-    ],
-    []
-  )
+    ]
 
   
-const columnsSmallScreen:Column[] = useMemo(
-    () => [
+    const columnsSmallScreen:Column[] = [
       {
         Header: 'Id',
         accessor: 'id', 
@@ -197,10 +196,11 @@ const columnsSmallScreen:Column[] = useMemo(
         Header: 'Return Station Name',
         accessor: 'Station_Journey_returnStationIdToStation.name_FIN',
       },
-    ],
-    []
-  )
+    ]
 
   return {columnsBigScreen,columnsSmallScreen}
 }
+
+
+/* eslint-enable */
 

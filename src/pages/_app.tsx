@@ -1,6 +1,6 @@
 import { api } from "~/utils/api"
 import "~/styles/globals.css"
-import { AppProps } from "next/app"
+import { type AppProps } from "next/app"
 import { Provider } from "jotai"
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'

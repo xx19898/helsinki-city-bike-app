@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import prisma from '../helpers/prisma'
 
-describe('journey gets created', async () => {
+describe('journey gets created', () => {
     it('should create a journey from Kamppi to Kamppi with id of 1', async () => {
         const newStation = await prisma.station.create({
             data:{

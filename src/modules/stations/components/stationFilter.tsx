@@ -19,13 +19,13 @@ interface IStationFilter{
     setName: (v:string | null) => void
 }
 
-export default ({
+export default function StationFilter({
     stationNames,stationAddresses,
     setSortBy,setSortType,
     sortBy,sortType,
     address,setAddress,
     name,setName
-}:IStationFilter) => {
+}:IStationFilter){
 
     return(
         <Grid className="bg-white mx-auto w-full rounded-t-md" container justifyContent="center" alignItems="center" 

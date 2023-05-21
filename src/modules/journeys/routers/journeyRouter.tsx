@@ -35,17 +35,22 @@ export const journeyRouter = createTRPCRouter({
         z.object({
             coveredDistance: z.number(),
             duration:z.number(),
-            
+            departure: z.date(),
+            return: z.date(),
+            departureStationId: z.number(),
+            returnStationId: z.number(),
         })
     )
     .mutation(async ({ctx,input}) => {
 
-        const id = ctx
-        ctx.prisma.journey.create({
+        await ctx.prisma.journey.create({
             data:{
-                coveredDistance: input.distance,
-                
-                
+                coveredDistance: input.coveredDistance,
+                departure: input.departure,
+                return: input.return,
+                duration: input.duration,
+                departureStationId: input.departureStationId,
+                returnStationId: input.returnStationId,
             }
         })
     })

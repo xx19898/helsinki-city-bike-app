@@ -1,6 +1,4 @@
-import { SyntheticEvent, useRef, useState } from "react";
-import ReactSlider from "react-slider"
-import rangeSlider from './rangeSlider.module.css'
+import { type SyntheticEvent, useState } from "react";
 import { Slider } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -9,8 +7,6 @@ const palette = {
     primary: { main: '#BA1200',light: '#031927',dark:'#9DD1F1','contrastText':'#508AA8'},
     secondary: { main: '#542d4d' },
   };
-  
-  const themeName = 'hcbaTheme';
   
   export const theme = createTheme({ palette })
 
@@ -21,7 +17,7 @@ interface IRangeSlider{
     valueCallback: (newValue:number[]) => void,
 }
 
-export default ({max,min,value,valueCallback}:IRangeSlider) => {
+export default function RangeSlider({max,min,value,valueCallback}:IRangeSlider){
     const [sliderState,setSliderState] = useState([0,100000])
     
     const MIN_DIST = 1

@@ -1,7 +1,7 @@
 
 
 
-export default ({height}:{height:number}) => {
+export default function BicycleIcon ({height}:{height:number}){
     return(
         <svg xmlns="http://www.w3.org/2000/svg" height={height} viewBox="0 0 423.19 201.05">
             <g stroke="#3f3f3f" stroke-width="9" data-name="Layer 2">

@@ -2,25 +2,19 @@ import DataVisualizer from "~/modules/journeys/components/journeyDataVisualizer"
 import SearchIcon from "~/resources/icons/searchIcon"
 import useJourneyMainComponent from "../hooks/useJourneyMainComponent"
 import useFilterComponent from "./useFilterComponent"
-import { sortJourneyData } from "../utils/journeyUtils"
-import { useMemo } from "react"
 import FilterComponent from "./filterComponent"
 
-export default () => {
+export default function JourneyMainComponent(){
     const {fetchAdditionalJourneys,journeyData,idFilter,onIdInput} = useJourneyMainComponent()
     const {
            distanceRange,setDistanceRange,
            durationRange,setDurationRange,
-           chosenDepartureStation,
-           chosenReturnStation,
            setChosenDepartureStation,
            setChosenReturnStation,
            stations,
            sortedData
         } = useFilterComponent({idFilter:idFilter,journeyData:journeyData === null ? [] : journeyData})
-
-    console.log('REPAINTING JOURNEY MAIN COMP')
-    
+    1
 
     return(
         <section className="w-[90%] mt-10 min-h-[50%] bg-BabyBlue rounded-md overflow-hidden mb-10">
