@@ -5,6 +5,11 @@ test('basic test',async ({page}) => {
     
     await page.goto('http://localhost:3000/')
 
-    const welcome = page.getByText('Welcome')
-    expect(welcome.innerText()).toBe('Welcome')
+    const button = await page.getByText('View Journey')
+
+    const count = await button.count()
+
+    console.log(count)
+
+    expect(count).toBe(1)
 })

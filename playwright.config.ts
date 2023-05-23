@@ -25,6 +25,8 @@ export default defineConfig({
 
     ignoreHTTPSErrors: true,
 
+    testIdAttribute: 'id',
+
     // Collect trace when retrying the failed test.
     trace: 'on-first-retry',
   },

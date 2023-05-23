@@ -52,6 +52,8 @@ export default function NewJourney(){
         console.log({duration})
     }
     console.log({returnStation})
+    console.log({departureDate})
+    console.log({returnDate})
 
     return(
         <div className="min-h-screen w-full bg-ColumbiaBlue text-white">
@@ -59,17 +61,18 @@ export default function NewJourney(){
             <form onSubmit={() => console.log('submitted')} className="mt-10 w-3/4 mx-auto flex flex-col justify-center items-center">
                         <div className="w-full flex md:flex-row  sm:flex-col 
                         items-center justify-stretch gap-2">
-                            <div className="w-1/2 sm:w-full flex flex-col justify-center items-center">
+                            <div aria-label='departureTimeContainer' className="w-1/2 sm:w-full flex flex-col justify-center items-center">
                                 <label>Departure Time</label>
                                 <DateTimePicker className="w-full" onChange={(newValue) => setDepartureDate(newValue as string)}/>
                             </div>
-                            <div className="w-1/2 sm:w-full flex flex-col justify-center items-center">
+                            <div aria-label='returnTimeContainer' className="w-1/2 sm:w-full flex flex-col justify-center items-center">
+                                
                                 <label>Return Time</label>
                                 <DateTimePicker className="w-full" onChange={(newValue) => setReturnDate(newValue as string)}/>
                             </div>
                         </div>
                         <div className="w-full flex md:flex-row sm:flex-col justify-stretch gap-2 items-stretch">
-                        <div className="sm:w-full md:w-1/2 flex flex-col justify-stretch items-center">
+                        <div aria-label='departure-station-container' className="sm:w-full md:w-1/2 flex flex-col justify-stretch items-center">
                             <label>Departure Station</label>
                             <Autocomplete className="w-full" renderInput={(params) => <TextField  {...params} label="Name" />}
                             options={stationNames.data ? eliminateStationNameDuplicates(stationNames.data) : []} 
@@ -81,7 +84,7 @@ export default function NewJourney(){
                             
                             />
                         </div>
-                        <div className="sm:w-full md:w-1/2 flex flex-col justify-stretch items-center">   
+                        <div aria-label='return-station-container' className="sm:w-full md:w-1/2 flex flex-col justify-stretch items-center">   
                             <label>Return Station</label>
                             <Autocomplete className="w-full" renderInput={(params) => <TextField  {...params} label="Name" />}
                             options={stationNames.data ? eliminateStationNameDuplicates(stationNames.data) : []}

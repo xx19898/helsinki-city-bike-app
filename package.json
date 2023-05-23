@@ -13,7 +13,8 @@
     "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev --name init",
     "test:int": "sh ./scripts/run-integration.sh",
     "test:unit": "vitest -c ./vitest.config.unit.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e-trace": "npm run build && playwright test --trace on"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
