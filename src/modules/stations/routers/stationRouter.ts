@@ -36,5 +36,28 @@ export const stationRouter = createTRPCRouter({
     })).mutation(async ({ctx,input}) => {
         const data = await ctx.prisma.station.create({data:input})
         return data
-    })
+    }),
+    checkForStationsWithSameName: publicProcedure.input(z.string()).query(
+        async ({ctx,input}) => {
+            const stations = await ctx.prisma.station.findFirst({where:{
+                name_FIN: input
+            }})
+            
+            return stations !== null
+        }
+    ),
+    checkForStationsWithSameId: publicProcedure.input(z.number()).query(
+        async ({ctx,input}) => {
+            const stations = await ctx.prisma.station.findFirst({where:{id:input}})
+
+            return stations !== null
+        }
+    ),
+    checkForStationsWithSameFid: publicProcedure.input(z.number()).query(
+        async ({ctx,input}) => {
+            const stations = await ctx.prisma.station.findFirst({where:{fId:input}})
+
+            return stations !== null
+        }
+    )
 })
