@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "build:test": "dotenv -e .env.test -- next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
@@ -13,8 +14,7 @@
     "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev --name init",
     "test:int": "sh ./scripts/run-integration.sh",
     "test:unit": "vitest -c ./vitest.config.unit.ts",
-    "test:e2e": "playwright test",
-    "test:e2e-trace": "npm run build && playwright test --trace on"
+    "test:e2e-trace": "sh ./scripts/run-end-to-end.sh"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",

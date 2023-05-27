@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const nodeRef = useRef(null);
-  const router = useRouter();
+    const router = useRouter();
   
   return (
     <Transition nodeRef={nodeRef} addEndListener={() => console.log('END')} onEntering={() => console.log('ENTERING')} onEnter={() => console.log('ENTERING')}>

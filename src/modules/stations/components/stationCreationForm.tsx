@@ -2,13 +2,27 @@ import { Input, TextField } from '@mui/material'
 import {useForm, Controller } from 'react-hook-form'
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { api } from '~/utils/api';
 
 interface IStationCreationForm{
     onSubmit: () => void
 }
-export default function StationCreationForm({onSubmit}:IStationCreationForm){
 
-    const { getFieldState,getValues,formState:{errors,isValid,},control, handleSubmit } = useForm({
+type FormValues = {
+    name: string,
+    address:string,
+    operator:string,
+    city:string,
+    id: number,
+    fId: number,
+    x:number,
+    y:number,
+    capacity:number
+}
+//Add trpc mutation possibility, write e2e to test it
+export default function StationCreationForm({onSubmit}:IStationCreationForm){
+    const createStation = api.stations.createStation.useMutation()
+    const { getFieldState,getValues,reset,formState:{errors,isValid,},control, handleSubmit } = useForm({
         defaultValues: {
             name: '',
             address:'',
@@ -24,17 +38,28 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
         reValidateMode: 'onChange'
     })
 
-    console.log({})
-
     const buttonColor = isValid ? '#BA1200' : ''
 
-    const mockSubmit = (data:{name:string}) => console.log(data)
-
-    console.log('Id is ' + getValues('id'))
+    function submit(props:FormValues){
+        createStation.mutate({
+            address:props.address,
+            capacity:props.capacity,
+            city_FIN:props.city,
+            city_SWE:props.city,
+            fId:props.fId,
+            id:props.id,
+            name_ENG:props.city,
+            name_FIN:props.name,
+            name_SWE:props.name,
+            operator:props.operator,
+            x:props.x,
+            y:props.y})
+        reset()
+    }
     
     return(
         <form 
-        onSubmit={handleSubmit(mockSubmit)}
+        onSubmit={handleSubmit(submit)}
         className="sm:flex sm:flex-col sm:justify-center sm:items-center sm:w-full sm:px-[10%] sm:gap-4">
             <Controller
                 name='name'
@@ -46,6 +71,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             <label>Name</label>
                             <TextField
                             className='w-full' 
+                            inputProps={{"aria-label":'NameInput'}}
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
                             value={value} onChange={onChange} name={name} inputRef={ref}  />
@@ -61,7 +87,8 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         <>
                             <label>Address</label>
                             <TextField
-                            className='w-full' 
+                            className='w-full'
+                            arial-label='Address' 
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
                             value={value} onChange={onChange} name={name} inputRef={ref}  />
@@ -78,7 +105,8 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         <>
                             <label>Operator</label>
                             <TextField
-                            className='w-full' 
+                            className='w-full'
+                            aria-label='Operator' 
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
                             value={value} onChange={onChange} name={name} inputRef={ref}  />
@@ -96,6 +124,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             <label>City</label>
                             
                             <TextField
+                            aria-label='City'
                             className='w-full' 
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
@@ -113,6 +142,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         <>
                             <label>Id</label>
                             <TextField
+                            aria-label='id'
                             className='w-full' 
                             type='number'
                             variant='filled'
@@ -131,6 +161,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         <>
                             <label>fId</label>
                             <TextField
+                            aria-label='Fid'
                             className='w-full' 
                             type='number'
                             variant='filled'
@@ -149,6 +180,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         <>
                             <label>Capacity</label>
                             <TextField
+                            aria-label='Capacity'
                             className='w-full' 
                             type='number'
                             variant='filled'
@@ -168,6 +200,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             <div className='w-full flex flex-col justify-center items-center'>
                                 <label>X</label>
                                 <TextField
+                                aria-label='X'
                                 className='w-full' 
                                 type='number'
                                 variant='filled'
@@ -186,6 +219,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             <div className='w-full flex flex-col justify-center items-center'>
                                 <label>Y</label>
                                 <TextField
+                                aria-label='Y'
                                 className='w-full' 
                                 type='number'
                                 variant='filled'
@@ -196,7 +230,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         )
                     }}/>
                 </div>
-            <button>
+            <button aria-label='SubmitButton'>
                 <AddCircleIcon sx={{fontSize:'100px',color: `${buttonColor}`}}/>
             </button>
         </form>

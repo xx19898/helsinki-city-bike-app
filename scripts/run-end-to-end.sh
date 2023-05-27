@@ -15,4 +15,7 @@ $DIR/wait-for-it.sh "${TEST_DATABASE_URL}" -- echo '🟢 - Database is ready!'
 
 npm run migrate:test
 
-//TODO: make npm script for playwright and paste it in here
+
+dotenv -e .env.test -- playwright test --trace on
+
+
