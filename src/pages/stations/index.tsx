@@ -36,7 +36,7 @@ export async function getServerSideProps() {
 export default function ViewStations (props: {
   stationsData: StationWithReturnAndDepartureCounts[]
 }){
-    const filterData = useMemo(() => {
+      const filterData = useMemo(() => {
       const stationNames:string[] = []
       const stationAddresses:string[] = []
       props.stationsData.forEach( (stationData) => {

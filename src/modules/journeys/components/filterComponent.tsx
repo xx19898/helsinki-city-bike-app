@@ -22,7 +22,6 @@ export default function FilterComponent({
     setDurationCallback,stations,
     setChosenDepartureStation,setChosenReturnStation
 }:RangeSlider){
-    console.log('REPAINTInG FIlTER COmP')
     const stationLabels = useMemo(() => {
         const formattedStations =  stations.map(station => { return {label:station}})
         return formattedStations

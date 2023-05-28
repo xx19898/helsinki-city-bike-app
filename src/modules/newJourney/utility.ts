@@ -4,8 +4,8 @@ import { AppRouter } from "~/server/api/root"
 export function eliminateStationNameDuplicates(stationInfo:  inferRouterOutputs<AppRouter>['journeys']['stationNamesAndIds']){
     const names = stationInfo.map(entry => entry.name_FIN)
 
-    return stationInfo.map(entry => entry.name_FIN).filter((element,index) => {
-        return names.indexOf(element) === index
+    return stationInfo.filter((element,index) => {
+        return names.indexOf(element.name_FIN) === index
     })
 }
 
