@@ -28,7 +28,7 @@ test('adding journeys works as intended',async ({page}) => {
     expect(url).toBe('http://localhost:3000/newJourney')
 
     //Setting departure time
-    const departureTimeInput = await page.getByLabel('departureTimeContainer').getByPlaceholder('MM/DD/YYYY hh:mm aa')
+    const departureTimeInput = await page.getByLabel('departureTimeContainer')
 
     url = await page.url()
     console.log({url})

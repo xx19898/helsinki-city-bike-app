@@ -1,8 +1,8 @@
 import { DateTimePicker } from "@mui/x-date-pickers"
 import {useMemo, useState} from 'react'
-import Autocomplete from "@mui/material/Autocomplete/Autocomplete"
-import Input from "@mui/material/Input/Input";
-import TextField from "@mui/material/TextField/TextField"
+import Autocomplete from "@mui/material/Autocomplete"
+import Input from "@mui/material/Input";
+import TextField from "@mui/material/TextField"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import dayjs from "dayjs"
 import { Controller, useForm } from "react-hook-form"

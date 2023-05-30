@@ -5,6 +5,7 @@ import { journeyCursorAtom, journeyDataAtom, journeyStationsAtom } from "../atom
 import { useAtom, useAtomValue } from "jotai"
 
 export default() => {
+    console.log('useJourneyMainComponent rerendered')
     const [idFilter, setIdFilter] = useState<number | null>(null)
     const [cursor,setCursor] = useAtom(journeyCursorAtom)
     const [journeyData,setJourneyData] = useAtom(journeyDataAtom)

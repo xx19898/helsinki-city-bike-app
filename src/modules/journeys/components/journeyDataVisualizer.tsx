@@ -21,10 +21,14 @@ export default function JourneyDataVisualizer ({data,fetchAdditionalJourneys}:ID
     const rowData = useMemo(() => data,
      [data]
      )
+     
+     console.log('rerendered journey data visualizer')
 
     const {columnsBigScreen,columnsSmallScreen} = getColumns()
 
-    const columns = width > 1024 ? columnsBigScreen : columnsSmallScreen
+    const columns = useMemo(() => {
+      return width > 1024 ? columnsBigScreen : columnsSmallScreen
+    },[width]) 
 
     const tableInstance = useTable({columns:columns,data: rowData === null ? [] : rowData})
 
@@ -46,8 +50,10 @@ export default function JourneyDataVisualizer ({data,fetchAdditionalJourneys}:ID
         //TODO: make it so that if ANY of the filters are active, no fetching occurs, add button to turn off all of
       };
 
+      console.log('GOT HERE')
+
     return(
-      <div className="h-[400px] overflow-y-scroll overflow-x-auto w-full" onScroll={(e) => handleScroll(e) }>
+      <div className="h-[400px] overflow-y-scroll overflow-x-auto w-full" onScroll={(e) => handleScroll(e)}>
       <table {...getTableProps()} className="w-full table overflow-y-scroll h-auto mb-10">
 
       <thead className="sticky top-0 bg-EngineeringOrange text-white overflow-x-scroll">

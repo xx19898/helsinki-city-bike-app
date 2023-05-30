@@ -14,7 +14,8 @@ export default function JourneyMainComponent(){
            stations,
            sortedData
         } = useFilterComponent({idFilter:idFilter,journeyData:journeyData === null ? [] : journeyData})
-    1
+    
+    console.log('RERENDERED_JOURNEY_MAIN')
 
     return(
         <section className="w-[90%] mt-10 min-h-[50%] bg-BabyBlue rounded-md overflow-hidden mb-10">

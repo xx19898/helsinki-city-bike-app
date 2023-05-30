@@ -51,7 +51,7 @@ export default function FilterComponent({
                     
                     options={stationLabels}
                     sx={{ width: '100%', }}
-                    renderInput={(params:any) => <TextField onChange={(e) => setChosenDepartureStation(e.target.value)} {...params} label="Departure Station" onCl />}
+                    renderInput={(params:any) => <TextField onChange={(e) => setChosenDepartureStation(e.target.value)} {...params} label="Departure Station" />}
                     />
                     <Autocomplete
                     disablePortal
