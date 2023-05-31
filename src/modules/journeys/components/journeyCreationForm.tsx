@@ -9,6 +9,8 @@ import { Controller, useForm } from "react-hook-form"
 import { eliminateStationNameDuplicates } from "~/modules/newJourney/utility"
 import { api } from "~/utils/api"
 
+/* eslint-disable */
+
 type FormValues = {
     departure: string,
     return : string,
@@ -176,7 +178,8 @@ const JourneyCreationForm = () => {
         const returnDate = new Date(props.return)
         const departureDate = new Date(props.departure)
         const duration = dayjs(props.return).diff(dayjs(props.departure),'seconds')
-     //   createJourney.mutate({...props,return:returnDate,departure:departureDate,duration:duration})
+        console.log({...props,return:returnDate,departure:departureDate,duration:duration,departureStationId:props.departureStation.id,returnStationId:props.returnStation.id,coveredDistance:props.coveredDistance})
+       //createJourney.mutate({...props,return:returnDate,departure:departureDate,duration:duration,departureStationId:props.departureStation.id,returnStationId:props.returnStation.id,coveredDistance:props.coveredDistance})
     }
 
 

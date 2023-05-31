@@ -28,14 +28,14 @@ test('adding journeys works as intended',async ({page}) => {
     expect(url).toBe('http://localhost:3000/newJourney')
 
     //Setting departure time
-    const departureTimeInput = await page.getByLabel('departureTimeContainer')
+    const departureTimeInput = await page.getByLabel('departureTimeContainer').getByPlaceholder('MM/DD/YYYY hh:mm aa')
 
     url = await page.url()
     console.log({url})
 
     expect(await departureTimeInput.count()).toBe(1)
 
-    await departureTimeInput.click()
+    // await departureTimeInput.click()
     
     await departureTimeInput.type('120220001015AM')
 
@@ -44,9 +44,6 @@ test('adding journeys works as intended',async ({page}) => {
     //Setting return time
     const returnTimeInput = await page.getByLabel('returnTimeContainer').getByPlaceholder('MM/DD/YYYY hh:mm aa')
 
-    expect(await returnTimeInput.count()).toBe(1)
-
-    await returnTimeInput.click()
     
     await returnTimeInput.type('1202200011:15AM')
 

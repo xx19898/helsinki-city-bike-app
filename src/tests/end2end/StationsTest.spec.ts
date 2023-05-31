@@ -9,11 +9,16 @@ test('user can add new stations',async ({page}) => {
     const count = await addStationButton.count()
     expect(count).toBe(1)
     await addStationButton.highlight()
+    
     await addStationButton.click()
+    
     await page.waitForURL('**/newStation')
-    const url = await page.url()
-    console.log({url})
-    const nameField = await page.getByText('Create a new station')
-    const nameFieldCount = await nameField.count()
-    expect(nameFieldCount).toBe(1)
+
+    await page.getByLabel('NameInput').fill('Kamppi')
+    
+    const nameInput = await page.getByLabel('NameInput')
+    
+    const value = await nameInput.inputValue()
+
+    expect(value).toBe('Kamppi')
 })
