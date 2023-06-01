@@ -3,9 +3,16 @@ import {useForm, Controller } from 'react-hook-form'
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { api } from '~/utils/api';
+import { useDebouncedCallback } from 'use-debounce';
+import { useState } from 'react';
+import { debounce } from 'lodash';
 
 interface IStationCreationForm{
     onSubmit: () => void
+}
+
+interface IDebounced{
+    function: () => void,
 }
 
 type FormValues = {
@@ -21,8 +28,8 @@ type FormValues = {
 }
 //Add trpc mutation possibility, write e2e to test it
 export default function StationCreationForm({onSubmit}:IStationCreationForm){
-    const createStation = api.stations.createStation.useMutation()
-    const { getFieldState,getValues,reset,formState:{errors,isValid,},control, handleSubmit } = useForm({
+
+    const { clearErrors,getFieldState,getValues,reset,formState:{errors,isValid,},control,setError,handleSubmit } = useForm({
         defaultValues: {
             name: '',
             address:'',
@@ -37,6 +44,30 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
         mode: 'onChange',
         reValidateMode: 'onChange'
     })
+
+    console.log('RERENDER')
+
+    const createStation = api.stations.createStation.useMutation()
+
+    const debounced = useDebouncedCallback(
+        () => {
+          validateFid()
+        },
+        1000
+      )
+
+    const fId = getValues('fId')
+    const {refetch:rechekForStationsWithSameFid,data:FidIsAlreadyTaken} = api.stations.checkForStationsWithSameFid.useQuery(fId ,{enabled:false})
+
+    async function validateFid(){
+        const {data:fIdIsTaken} = await rechekForStationsWithSameFid({})
+        console.log({fIdIsTaken})
+        if(fIdIsTaken){
+            setError('fId',{type:'fIdIsAlreadyTaken',message:'Sorry, but this fId is already taken, please take another one'})
+            }else{
+            clearErrors('fId')
+        }   
+    }
 
     const buttonColor = isValid ? '#BA1200' : ''
 
@@ -74,7 +105,9 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             inputProps={{"aria-label":'NameInput'}}
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            value={value} onChange={onChange} name={name} inputRef={ref}  />
+                            value={value} onChange={(e) => {
+                                onChange(e.target.value)
+                                }} name={name} inputRef={ref}  />
                         </>
                     )
                 }}/>
@@ -91,8 +124,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             inputProps={{'aria-label':'AddressInput'}} 
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            value={value} onChange={onChange} name={name} inputRef={ref}  />
-                            
+                            value={value} onChange={onChange} name={name} inputRef={ref}  /> 
                         </>
                     )
                 }}/>
@@ -167,7 +199,15 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             variant='filled'
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            value={value} onChange={onChange} name={name} inputRef={ref} />
+                            onChange={(e) => {
+                                onChange(e.target.value)
+                                console.log({newFidValue:e.target.value})
+                                if(/^\d+$/.test(e.target.value)){
+                                    debounced()
+                                }else{
+                                    console.log('fId cant be parsed to int')
+                                }
+                            }} name={name} inputRef={ref} />
                         </>
                     )
                 }}/>

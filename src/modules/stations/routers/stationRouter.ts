@@ -53,11 +53,13 @@ export const stationRouter = createTRPCRouter({
             return stations !== null
         }
     ),
-    checkForStationsWithSameFid: publicProcedure.input(z.number()).query(
+    checkForStationsWithSameFid: publicProcedure.input(z.coerce.number()).query(
         async ({ctx,input}) => {
-            const stations = await ctx.prisma.station.findFirst({where:{fId:input}})
-
-            return stations !== null
+            const foundStations = await ctx.prisma.station.findFirst({where:{fId:input}})
+            console.log({soughtFid:input})
+            console.log({foundStations})
+            console.log({finalReturn:foundStations !== null})
+            return foundStations !== null
         }
     )
 })
