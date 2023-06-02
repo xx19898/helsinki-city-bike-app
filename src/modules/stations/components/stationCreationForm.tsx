@@ -1,11 +1,9 @@
-import { Input, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import {useForm, Controller } from 'react-hook-form'
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { api } from '~/utils/api';
 import { useDebouncedCallback } from 'use-debounce';
-import { useState } from 'react';
-import { debounce } from 'lodash';
 
 interface IStationCreationForm{
     onSubmit: () => void
@@ -26,10 +24,10 @@ type FormValues = {
     y:number,
     capacity:number
 }
-//Add trpc mutation possibility, write e2e to test it
+
 export default function StationCreationForm({onSubmit}:IStationCreationForm){
 
-    const { clearErrors,getFieldState,getValues,reset,formState:{errors,isValid,},control,setError,handleSubmit } = useForm({
+    const { clearErrors,getFieldState,getValues,reset,formState:{errors,isValid},control,setError,handleSubmit } = useForm({
         defaultValues: {
             name: '',
             address:'',
@@ -45,28 +43,45 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
         reValidateMode: 'onChange'
     })
 
-    console.log('RERENDER')
-
     const createStation = api.stations.createStation.useMutation()
 
-    const debounced = useDebouncedCallback(
-        () => {
-          validateFid()
-        },
-        1000
-      )
+    const checkForStationsWithSameFid = api.stations.checkForStationsWithSameFid.useMutation()
 
-    const fId = getValues('fId')
-    const {refetch:rechekForStationsWithSameFid,data:FidIsAlreadyTaken} = api.stations.checkForStationsWithSameFid.useQuery(fId ,{enabled:false})
+    const checkForStationsWithSameName = api.stations.checkForStationsWithSameName.useMutation()
+    
+    const checkForStationsWithSameId = api.stations.checkForStationsWithSameId.useMutation()
 
-    async function validateFid(){
-        const {data:fIdIsTaken} = await rechekForStationsWithSameFid({})
-        console.log({fIdIsTaken})
+    const debounceCheckForStationWithSameFid = useDebouncedCallback((newFid:number) => validateFid(newFid),1000)
+    
+    const debounceCheckForStationWithSameName = useDebouncedCallback((newName:string) => validateName(newName),1000)
+    
+    const debounceCheckForStationWithSameId = useDebouncedCallback((newId:number) => validateId(newId),1000)
+    
+    async function validateFid(fId: number){
+        const fIdIsTaken = await checkForStationsWithSameFid.mutateAsync({fId:fId})
         if(fIdIsTaken){
             setError('fId',{type:'fIdIsAlreadyTaken',message:'Sorry, but this fId is already taken, please take another one'})
             }else{
             clearErrors('fId')
         }   
+    }
+
+    async function validateName(newName:string){
+        const nameIsTaken = await checkForStationsWithSameName.mutateAsync(newName)
+        if(nameIsTaken){
+            setError('name',{type:'NameAlreadyTaken',message:'Sorry, but this name is already taken, please take another one'})
+        }else{
+            clearErrors('name')
+        } 
+    }
+
+    async function validateId(newId:number){
+        const idIsTaken = await checkForStationsWithSameId.mutateAsync(newId)
+        if(idIsTaken){
+            setError('id',{type:'IdAlreadyInUse',message:'Sorry, but this id is already in use. Please choose another one'})
+        }else{
+            clearErrors('id')
+        }
     }
 
     const buttonColor = isValid ? '#BA1200' : ''
@@ -106,7 +121,9 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
                             value={value} onChange={(e) => {
-                                onChange(e.target.value)
+                                const newName = e.target.value
+                                onChange(newName)
+                                debounceCheckForStationWithSameName(newName)
                                 }} name={name} inputRef={ref}  />
                         </>
                     )
@@ -180,7 +197,16 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             variant='filled'
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            value={value} onChange={onChange} name={name} inputRef={ref} />
+                            onChange={(e) => {
+                                
+                                const newId = e.target.value
+                                if(isNumber(newId)){
+                                    debounceCheckForStationWithSameId(parseInt(newId))
+                                }else{
+                                    clearErrors('id')
+                                    console.log('Id should be a number')
+                                }
+                            }} name={name} inputRef={ref} />
                         </>
                     )
                 }}/>
@@ -200,12 +226,12 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
                             onChange={(e) => {
-                                onChange(e.target.value)
-                                console.log({newFidValue:e.target.value})
-                                if(/^\d+$/.test(e.target.value)){
-                                    debounced()
+                                const newValue = e.target.value
+                                onChange(newValue)
+                                if(isNumber(newValue)){
+                                    debounceCheckForStationWithSameFid(parseInt(newValue))
                                 }else{
-                                    console.log('fId cant be parsed to int')
+                                    console.log('Invalid fId value')
                                 }
                             }} name={name} inputRef={ref} />
                         </>
@@ -275,4 +301,8 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
             </button>
         </form>
     )
+
+    function isNumber(value:string){
+        return /^\d+$/.test(value)
+    }
 }
