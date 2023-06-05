@@ -4,6 +4,7 @@ import {useForm, Controller } from 'react-hook-form'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { api } from '~/utils/api';
 import { useDebouncedCallback } from 'use-debounce';
+import { error } from 'console';
 
 interface IStationCreationForm{
     onSubmit: () => void
@@ -87,20 +88,20 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
     const buttonColor = isValid ? '#BA1200' : ''
 
     function submit(props:FormValues){
-        console.log({
+        createStation.mutate({
             address:props.address,
             capacity:props.capacity,
-            city_FIN:props.city,
-            city_SWE:props.city,
+            city_FIN: props.name,
+            city_SWE: props.name,
             fId:props.fId,
             id:props.id,
-            name_ENG:props.city,
+            name_ENG:props.name,
             name_FIN:props.name,
-            name_SWE:props.name,
-            operator:props.operator,
-            x:props.x,
-            y:props.y})
-       // reset()
+            name_SWE: props.name,
+            operator: props.operator,
+            x: props.x,
+            y: props.y,
+        })
     }
     
     return(
@@ -120,10 +121,17 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             inputProps={{"aria-label":'NameInput'}}
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            value={value} onChange={(e) => {
+                            value={value} onChange={async (e) => {
                                 const newName = e.target.value
+                                console.log({NEW_NAME_LENGTH:newName.length})
                                 onChange(newName)
-                                debounceCheckForStationWithSameName(newName)
+                                if(newName.length > 0) await debounceCheckForStationWithSameName(newName)
+                                else{
+                                    console.log('LENGTH IS ZERO')
+                                    debounceCheckForStationWithSameName.cancel()
+                                    clearErrors('name')
+                                    setError('name',{type:'nameCantBeEmpty',message:'Name can\'t be empty'})
+                                }
                                 }} name={name} inputRef={ref}  />
                         </>
                     )
@@ -173,7 +181,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             <label>City</label>
                             
                             <TextField
-                            inputProps={{'aria-label':'City'}}
+                            inputProps={{'aria-label':'CityInput'}}
                             className='w-full' 
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
@@ -197,14 +205,19 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             variant='filled'
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            onChange={(e) => {
-                                
+                            onChange={async (e) => {
                                 const newId = e.target.value
-                                if(isNumber(newId)){
-                                    debounceCheckForStationWithSameId(parseInt(newId))
+                                onChange(newId)
+                                if(newId.length === 0){
+                                    debounceCheckForStationWithSameId.cancel()
+                                    setError('id',{type:'required',message:'Id should be positive number and it can\'t be empty'})
                                 }else{
-                                    clearErrors('id')
-                                    console.log('Id should be a number')
+                                    if(isNumber(newId)){
+                                        await debounceCheckForStationWithSameId(parseInt(newId))
+                                    }else{
+                                        clearErrors('id')
+                                        console.log('Id should be a number')
+                                    }
                                 }
                             }} name={name} inputRef={ref} />
                         </>
@@ -225,11 +238,15 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                             variant='filled'
                             error={fieldState.invalid}
                             helperText={fieldState.error != undefined ? fieldState.error.message : ''}
-                            onChange={(e) => {
+                            onChange={async (e) => {
                                 const newValue = e.target.value
+                                if(newValue.length === 0){
+                                    debounceCheckForStationWithSameFid.cancel()
+                                    setError('fId',{type:'required',message:'Id should be positive number and it can\'t be empty'})
+                                }
                                 onChange(newValue)
                                 if(isNumber(newValue)){
-                                    debounceCheckForStationWithSameFid(parseInt(newValue))
+                                    await debounceCheckForStationWithSameFid(parseInt(newValue))
                                 }else{
                                     console.log('Invalid fId value')
                                 }
@@ -287,6 +304,7 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                                 <TextField
                                 inputProps={{'aria-label':'YInput'}}
                                 className='w-full' 
+                                role='textbox'
                                 type='number'
                                 variant='filled'
                                 error={fieldState.invalid}
@@ -296,8 +314,8 @@ export default function StationCreationForm({onSubmit}:IStationCreationForm){
                         )
                     }}/>
                 </div>
-            <button aria-label='SubmitButton'>
-                <AddCircleIcon sx={{fontSize:'100px',color: `${buttonColor}`}}/>
+            <button aria-label='SubmitButton' disabled={!isValid}>
+                <AddCircleIcon sx={{fontSize:'100px',color: `${buttonColor}`}} />
             </button>
         </form>
     )

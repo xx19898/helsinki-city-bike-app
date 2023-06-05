@@ -21,8 +21,8 @@ export const stationRouter = createTRPCRouter({
         return stationsData
     }),
     createStation: publicProcedure.input(z.object({
-        fId: z.number(),
-        id: z.number(),
+        fId: z.coerce.number(),
+        id: z.coerce.number(),
         name_FIN:z.string(),
         name_SWE: z.string(),
         name_ENG: z.string(),
@@ -30,9 +30,9 @@ export const stationRouter = createTRPCRouter({
         city_FIN: z.string(),
         city_SWE: z.string(),
         operator: z.string(),
-        capacity: z.number(),
-        x:z.number(),
-        y:z.number(),
+        capacity: z.coerce.number(),
+        x:z.coerce.number(),
+        y:z.coerce.number(),
     })).mutation(async ({ctx,input}) => {
         const data = await ctx.prisma.station.create({data:input})
         return data

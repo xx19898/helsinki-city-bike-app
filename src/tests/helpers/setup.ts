@@ -1,10 +1,7 @@
-import resetDb from './reset-db'
-
-import { beforeEach } from 'vitest'
+import prisma from "./prisma";
 
 
-beforeEach(async () => {
-
-  await resetDb()
-
-})
+export async function resetDb(){
+  await prisma.station.deleteMany()
+  await prisma.journey.deleteMany()
+}
