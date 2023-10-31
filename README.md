@@ -7,3 +7,4 @@ App which is based on Solita's Dev Academy pre-assignment. App is basically a si
 <a href="https://cdnlogo.com/logo/next-js_21574.html"><img height="40" src="https://www.cdnlogo.com/logos/n/80/next-js.svg"></a>
 <a href="https://cdnlogo.com/logo/prisma_81387.html"><img height="40" src="https://www.cdnlogo.com/logos/p/67/prisma.svg"></a>
 <a href="https://cdnlogo.com/logo/postgresql_39744.html"><img height="40" src="https://www.cdnlogo.com/logos/p/93/postgresql.svg"></a>
+<a href="https://cdnlogo.com/logo/gsap-greensock_52936.html"><img height="40" src="https://www.cdnlogo.com/logos/g/31/gsap-greensock.svg"></a>
